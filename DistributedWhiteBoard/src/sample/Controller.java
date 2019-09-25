@@ -106,10 +106,17 @@ public class Controller implements Initializable
                 arrlistx.add(x-init_x);
                 arrlisty.add(y - init_y);
             }
+<<<<<<< HEAD
             System.out.println("Arr list x = " + arrlistx);
             System.out.println("Arr list y = " + arrlisty);
             System.out.println("Color = " + colorpicker.getValue());
             System.out.println("Brush Size = " + bsize.getText());
+=======
+        System.out.println("Arr list x = " + arrlistx);
+        System.out.println("Arr list y = " + arrlisty);
+        System.out.println("Color = " + colorpicker.getValue());
+        System.out.println("Brush Size = " + bsize.getText());
+>>>>>>> master
         });
     }
 
