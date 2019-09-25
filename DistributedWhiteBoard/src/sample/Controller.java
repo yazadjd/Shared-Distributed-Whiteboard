@@ -7,7 +7,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseDragEvent;
@@ -31,6 +33,15 @@ public class Controller implements Initializable {
 
     @FXML
     private Canvas canvas;
+
+    @FXML
+    private Label textdisplay;
+
+    @FXML
+    private TextArea chatmessage;
+
+    @FXML
+    private Button sendbutton;
 
     double init_x;
     double init_y;
@@ -87,6 +98,15 @@ public class Controller implements Initializable {
     @FXML
     public void rectSelected(ActionEvent e){
         toolSelected = "rectangle";
+    }
+    @FXML
+    private void handleButtonAction (ActionEvent event)
+    {
+        String messagec = chatmessage.getText();
+        //operate(message_s, in, ou);
+        chatmessage.setText("");
+        String existingmess = textdisplay.getText();
+        textdisplay.setText(existingmess + "\n\nClient 1: " + messagec);
     }
 
 }
