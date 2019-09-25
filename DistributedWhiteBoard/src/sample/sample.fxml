@@ -20,6 +20,7 @@
                         <Insets />
                      </HBox.margin>
                   </Button>
+                  <Button fx:id="rectangle" mnemonicParsing="false" onAction="#rectSelected" text="Rectangle" />
                   <ColorPicker fx:id="colorpicker" />
                   <TextField fx:id="bsize" />
                </children>
