@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseDragEvent;
 
+import java.awt.*;
 import java.net.URL;
 import java.sql.Array;
 import java.util.ResourceBundle;
@@ -31,8 +32,11 @@ public class Controller implements Initializable {
     @FXML
     private Canvas canvas;
 
-    boolean toolSelected = false;
+    double init_x;
+    double init_y;
 
+    String toolSelected;
+    Rectangle rectangle =  new Rectangle();
     GraphicsContext brushTool;
 
 
@@ -44,6 +48,9 @@ public class Controller implements Initializable {
         canvas.setOnMouseClicked( e -> {
             arrlistx.clear();
             arrlisty.clear();
+            double size = Double.parseDouble(bsize.getText());
+            init_x = e.getX() - size / 2;
+            init_y = e.getY() - size / 2;
         });
 
         canvas.setOnMouseDragged( e -> {
@@ -52,24 +59,34 @@ public class Controller implements Initializable {
             double y = e.getY() - size / 2;
             arrlistx.add(x); arrlisty.add(y);
 
-            if(toolSelected && !bsize.getText().isEmpty()){
+            if(toolSelected.matches("brush") && !bsize.getText().isEmpty()){
                 brushTool.setFill(colorpicker.getValue());
                 brushTool.fillRoundRect(x, y, size, size, size, size);
                 //brushTool.fillRect(x,y,size,size);
             }
+            if(toolSelected.matches("rectangle") && !bsize.getText().isEmpty()){
+                brushTool.setFill(colorpicker.getValue());
+                brushTool.fillRect(init_x,init_y,x-init_x  ,y-init_y);
+                //rectangle.setRect(y, x - init_x, y - init_y);
+
+            }
                 }
         );
         canvas.setOnMouseReleased( e -> {
-        System.out.println(arrlistx);
-        System.out.println(arrlisty);
-        System.out.println(colorpicker.getValue());
-        System.out.println(bsize.getText());
+        //System.out.println(arrlistx);
+        //System.out.println(arrlisty);
+        //System.out.println(colorpicker.getValue());
+        //System.out.println(bsize.getText());
         });
     }
 
     @FXML
     public void toolselected(ActionEvent e){
-        toolSelected = true;
+        toolSelected = "brush";
+    }
+    @FXML
+    public void rectSelected(ActionEvent e){
+        toolSelected = "rectangle";
     }
 
 }
