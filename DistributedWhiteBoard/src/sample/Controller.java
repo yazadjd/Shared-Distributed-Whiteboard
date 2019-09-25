@@ -99,24 +99,19 @@ public class Controller implements Initializable
                 }
             }
         });
-        canvas.setOnMouseReleased( e -> {
-            if (toolSelected.matches("rectangle")) {
+        canvas.setOnMouseReleased( e ->
+        {
+            if (toolSelected.matches("rectangle"))
+            {
                 arrlistx.add(init_x);
                 arrlisty.add(init_y);
                 arrlistx.add(x-init_x);
                 arrlisty.add(y - init_y);
             }
-<<<<<<< HEAD
-            System.out.println("Arr list x = " + arrlistx);
-            System.out.println("Arr list y = " + arrlisty);
-            System.out.println("Color = " + colorpicker.getValue());
-            System.out.println("Brush Size = " + bsize.getText());
-=======
         System.out.println("Arr list x = " + arrlistx);
         System.out.println("Arr list y = " + arrlisty);
         System.out.println("Color = " + colorpicker.getValue());
         System.out.println("Brush Size = " + bsize.getText());
->>>>>>> master
         });
     }
 
