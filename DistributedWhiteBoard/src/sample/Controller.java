@@ -11,6 +11,8 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseDragEvent;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 
 import java.awt.*;
 import java.net.URL;
@@ -18,7 +20,8 @@ import java.sql.Array;
 import java.util.ResourceBundle;
 import java.util.ArrayList;
 
-public class Controller implements Initializable {
+public class Controller implements Initializable
+{
 
     ArrayList<Double> arrlistx = new ArrayList<>(10);
     ArrayList<Double> arrlisty = new ArrayList<>(10);
@@ -32,17 +35,26 @@ public class Controller implements Initializable {
     @FXML
     private Canvas canvas;
 
-    double init_x = 0;
-    double init_y = 0;
-    double x;
-    double y;
-    String toolSelected;
-    GraphicsContext brushTool;
+    @FXML
+    private Label textdisplay;
+
+    @FXML
+    private TextArea chatmessage;
+
+    @FXML
+    private Button sendbutton;
+
+    private double init_x = 0;
+    private double init_y = 0;
+    private double x;
+    private double y;
+    private String toolSelected;
+    private GraphicsContext brushTool;
 
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
+    public void initialize(URL url, ResourceBundle resourceBundle)
+    {
         brushTool = canvas.getGraphicsContext2D();
 
         canvas.setOnMousePressed( e -> {
@@ -94,10 +106,17 @@ public class Controller implements Initializable {
                 arrlistx.add(x-init_x);
                 arrlisty.add(y - init_y);
             }
+<<<<<<< HEAD
+            System.out.println("Arr list x = " + arrlistx);
+            System.out.println("Arr list y = " + arrlisty);
+            System.out.println("Color = " + colorpicker.getValue());
+            System.out.println("Brush Size = " + bsize.getText());
+=======
         System.out.println("Arr list x = " + arrlistx);
         System.out.println("Arr list y = " + arrlisty);
         System.out.println("Color = " + colorpicker.getValue());
         System.out.println("Brush Size = " + bsize.getText());
+>>>>>>> master
         });
     }
 
@@ -105,9 +124,19 @@ public class Controller implements Initializable {
     public void toolselected(ActionEvent e){
         toolSelected = "brush";
     }
+
     @FXML
     public void rectSelected(ActionEvent e){
         toolSelected = "rectangle";
     }
 
+    @FXML
+    private void handleButtonAction (ActionEvent event)
+    {
+        String messagec = chatmessage.getText();
+        //operate(message_s, in, ou);
+        chatmessage.setText("");
+        String existingmess = textdisplay.getText();
+        textdisplay.setText(existingmess + "\n\nClient 1: " + messagec);
+    }
 }
