@@ -13,6 +13,9 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.ArcType;
 
 import java.awt.*;
 import java.net.URL;
@@ -23,8 +26,8 @@ import java.util.ArrayList;
 public class Controller implements Initializable
 {
 
-    ArrayList<Double> arrlistx = new ArrayList<>(10);
-    ArrayList<Double> arrlisty = new ArrayList<>(10);
+    ArrayList<Double> arrlistx = new ArrayList<>(1000);
+    ArrayList<Double> arrlisty = new ArrayList<>(1000);
 
     @FXML
     private ColorPicker colorpicker;
@@ -48,6 +51,7 @@ public class Controller implements Initializable
     private double init_y = 0;
     private double x;
     private double y;
+    private double size;
     private String toolSelected;
     private GraphicsContext brushTool;
 
@@ -55,9 +59,16 @@ public class Controller implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+
         brushTool = canvas.getGraphicsContext2D();
 
+        toolSelected = "brush"; // default tool selected
+        bsize.setText("15"); //Default size
+        colorpicker.setValue(Color.CYAN); //Default color
+
         canvas.setOnMousePressed( e -> {
+            brushTool.setFill(colorpicker.getValue());
+            size = Double.parseDouble(bsize.getText());
             arrlistx.clear();
             arrlisty.clear();
             double size = Double.parseDouble(bsize.getText());
@@ -66,7 +77,7 @@ public class Controller implements Initializable
         });
 
         canvas.setOnMouseDragged( e -> {
-            double size = Double.parseDouble(bsize.getText());
+
             x = e.getX() - size / 2;
             y = e.getY() - size / 2;
             if (toolSelected.matches("brush")) {
@@ -74,11 +85,16 @@ public class Controller implements Initializable
                 arrlisty.add(y);
             }
 
+            if(toolSelected.matches("eraser") && !bsize.getText().isEmpty()){
+                brushTool.setFill(Paint.valueOf("#f2f2f2"));
+                brushTool.fillRoundRect(x, y, size, size, size, size);
+            }
+
             if(toolSelected.matches("brush") && !bsize.getText().isEmpty()){
                 brushTool.setFill(colorpicker.getValue());
                 brushTool.fillRoundRect(x, y, size, size, size, size);
             }
-            if(toolSelected.matches("rectangle") && !bsize.getText().isEmpty()){
+            if(toolSelected.matches("rectangle")){
                 brushTool.setFill(colorpicker.getValue());
                 if((x - init_x ) < 0) {
                     if ((y - init_y) < 0 ){
@@ -99,8 +115,55 @@ public class Controller implements Initializable
                 }
             }
         });
-        canvas.setOnMouseReleased( e ->
-        {
+
+
+        canvas.setOnMouseReleased( e -> {
+
+            if (toolSelected.matches("circle")) {
+                //brushTool.clearRect(init_x - 1, init_y - 1,(x - init_x + y - init_y)/2, (x - init_x + y - init_y)/2);
+                //brushTool.fillOval(init_x, init_y, (x - init_x + y - init_y)/2, (x - init_x + y - init_y)/2);
+                if((x - init_x ) < 0) {
+                    if ((y - init_y) < 0 ){
+                        brushTool.fillOval(x, y, (init_x-x + init_y-y), (init_x-x + init_y-y));
+                        arrlistx.add(x);
+                        arrlistx.add((init_x-x + init_y-y)/2);
+                        arrlisty.add(y);
+                        arrlisty.add((init_x-x + init_y-y)/2);
+                    }
+                    else {
+                        brushTool.fillOval(x, y, (init_x-x + y - init_y)/2, (init_x-x + y - init_y)/2);
+                        arrlistx.add(x);
+                        arrlistx.add((init_x-x + y - init_y)/2);
+                        arrlisty.add(y);
+                        arrlisty.add((init_x-x + y - init_y)/2);
+                    }
+                }
+                else if ((x - init_x) > 0) {
+                    if ((y - init_y) > 0) {
+                        brushTool.fillOval(init_x, init_y, (x - init_x + y - init_y) / 2, (x - init_x + y - init_y) / 2);
+                        arrlistx.add(init_x);
+                        arrlistx.add((x - init_x + y - init_y) / 2);
+                        arrlisty.add(init_y);
+                        arrlisty.add((x - init_x + y - init_y) / 2);
+                    }
+                    else {
+                        brushTool.fillOval(init_x, init_y, (x - init_x + init_y - y) / 2, (x - init_x + init_y - y) / 2);
+                        arrlistx.add(init_x);
+                        arrlistx.add((x - init_x + init_y - y) / 2);
+                        arrlisty.add(init_y);
+                        arrlisty.add((x - init_x + init_y - y) / 2);
+                    }
+                }
+            }
+            if(toolSelected.matches("line") && !bsize.getText().isEmpty()){
+                brushTool.setStroke(colorpicker.getValue());
+                brushTool.setLineWidth(size);
+                brushTool.strokeLine(init_x,init_y, x, y);
+                arrlistx.add(init_x);
+                arrlistx.add(x);
+                arrlisty.add(init_y);
+                arrlisty.add(y);
+            }
             if (toolSelected.matches("rectangle"))
             {
                 arrlistx.add(init_x);
@@ -108,13 +171,47 @@ public class Controller implements Initializable
                 arrlistx.add(x-init_x);
                 arrlisty.add(y - init_y);
             }
-        System.out.println("Arr list x = " + arrlistx);
-        System.out.println("Arr list y = " + arrlisty);
-        System.out.println("Color = " + colorpicker.getValue());
-        System.out.println("Brush Size = " + bsize.getText());
+            if (toolSelected.matches("oval")) {
+                if((x - init_x ) < 0) {
+                    if ((y - init_y) < 0 ){
+                        brushTool.fillOval(x, y, init_x - x, init_y - y);
+                        arrlistx.add(x);
+                        arrlistx.add(init_x-x);
+                        arrlisty.add(y);
+                        arrlisty.add(init_y-y);
+                    }
+                    else {
+                        brushTool.fillOval(x, y, init_x - x , y - init_y);
+                        arrlistx.add(x);
+                        arrlistx.add(init_x-x);
+                        arrlisty.add(y);
+                        arrlisty.add(y - init_y);
+                    }
+                }
+                else if ((x - init_x) > 0) {
+                    if ((y - init_y) > 0) {
+                        brushTool.fillOval(init_x, init_y, x - init_x, y - init_y);
+                        arrlistx.add(init_x);
+                        arrlistx.add(x - init_x);
+                        arrlisty.add(init_y);
+                        arrlisty.add(y - init_y);
+                    }
+                    else {
+                        brushTool.fillOval(init_x, init_y, x - init_x , init_y - y);
+                        arrlistx.add(init_x);
+                        arrlistx.add(x - init_x);
+                        arrlisty.add(init_y);
+                        arrlisty.add(init_y - y);
+                    }
+                }
+
+            }
+            System.out.println("Arr list x = " + arrlistx);
+            System.out.println("Arr list y = " + arrlisty);
+            System.out.println("Color = " + colorpicker.getValue());
+            System.out.println("Brush Size = " + bsize.getText());
         });
     }
-
     @FXML
     public void toolselected(ActionEvent e){
         toolSelected = "brush";
@@ -125,6 +222,22 @@ public class Controller implements Initializable
         toolSelected = "rectangle";
     }
 
+    @FXML
+    public void circleSelected(ActionEvent e){
+        toolSelected = "circle";
+    }
+    @FXML
+    public void ovalSelected(ActionEvent e){
+        toolSelected = "oval";
+    }
+    @FXML
+    public void eraserSelected(ActionEvent e){
+        toolSelected = "eraser";
+    }
+    @FXML
+    public void lineSelected(ActionEvent e){
+        toolSelected = "line";
+    }
     @FXML
     private void handleButtonAction (ActionEvent event)
     {

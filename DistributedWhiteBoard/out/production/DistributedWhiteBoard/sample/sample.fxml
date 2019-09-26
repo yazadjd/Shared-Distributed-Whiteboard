@@ -51,7 +51,11 @@
                               <Insets />
                            </HBox.margin>
                         </Button>
+                        <Button fx:id="circle" mnemonicParsing="false" onAction="#circleSelected" text="Circle" />
+                        <Button fx:id="line" mnemonicParsing="false" onAction="#lineSelected" text="Line" />
+                        <Button fx:id="oval" mnemonicParsing="false" onAction="#ovalSelected" text="Oval" />
                         <Button fx:id="rectangle" mnemonicParsing="false" onAction="#rectSelected" text="Rectangle" />
+                        <Button fx:id="eraser" mnemonicParsing="false" onAction="#eraserSelected" text="Eraser" />
                         <ColorPicker fx:id="colorpicker" />
                         <TextField fx:id="bsize" />
                      </children>
