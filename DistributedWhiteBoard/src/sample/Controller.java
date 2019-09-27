@@ -24,7 +24,9 @@ import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.Array;
 import java.util.Optional;
@@ -77,6 +79,7 @@ public class Controller implements Initializable
     private double size;
     private String toolSelected;
     private GraphicsContext brushTool;
+    private File safile;
 
 
     @Override
@@ -284,33 +287,67 @@ public class Controller implements Initializable
     @FXML
     public void clicknew (ActionEvent event)
     {
-        System.exit(0);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("New Canvas");
+        alert.setHeaderText("Are you sure you want to open a new canvas?");
+        alert.setContentText("Unsaved changes will be lost.");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK)
+        {
+            brushTool.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+            safile = null;
+        }
     }
 
     @FXML
     public void clickopen (ActionEvent event)
     {
-        System.exit(0);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Open Canvas");
+        alert.setHeaderText("Are you sure you want to open an existing canvas?");
+        alert.setContentText("Unsaved changes will be lost.");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK)
+        {
+            FileChooser openfile = new FileChooser();
+            openfile.setTitle("Open Canvas");
+            File ofile = openfile.showOpenDialog(WhiteBoard.getInstance().getPrimaryStage());
+            if (ofile != null)
+            {
+                try
+                {
+                    InputStream io = new FileInputStream(ofile);
+                    Image img = new Image(io);
+                    brushTool.drawImage(img, 0, 0);
+                }
+                catch (IOException e)
+                {
+                    //e.printStackTrace();
+                    new Alert(Alert.AlertType.ERROR, "Unable to open canvas: " + e).show();
+                    //System.out.println("Unable to save image: " + e);
+                }
+            }
+        }
     }
 
     @FXML
     public void clicksaveas (ActionEvent event) //Saves the current session with a user-defined name
     {
         FileChooser savefile = new FileChooser();
-        savefile.setTitle("Save File As...");
-        File file = savefile.showSaveDialog(WhiteBoard.getInstance().getPrimaryStage());
-        if (file != null)
+        savefile.setTitle("Save Canvas As...");
+        safile = savefile.showSaveDialog(WhiteBoard.getInstance().getPrimaryStage());
+        if (safile != null)
         {
             try
             {
                 Image snapshot = canvas.snapshot(null, null);
-                ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", file);
-                new Alert(Alert.AlertType.INFORMATION, "Your file has been saved successfully.").show();
+                ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", safile);
+                new Alert(Alert.AlertType.INFORMATION, "Your canvas has been saved successfully.").show();
             }
             catch (IOException e)
             {
                 //e.printStackTrace();
-                new Alert(Alert.AlertType.ERROR, "Unable to save image: " + e).show();
+                new Alert(Alert.AlertType.ERROR, "Unable to save canvas: " + e).show();
                 //System.out.println("Unable to save image: " + e);
             }
         }
@@ -319,17 +356,41 @@ public class Controller implements Initializable
     @FXML
     public void clicksave (ActionEvent event) //Saves the current session by default as saved_session.png
     {
-        try
+        if (safile == null)
         {
-            Image snapshot = canvas.snapshot(null, null);
-            ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", new File("saved_session.png"));
-            new Alert(Alert.AlertType.INFORMATION, "Your file has been saved successfully.").show();
+            FileChooser savefile = new FileChooser();
+            savefile.setTitle("Save Canvas As...");
+            safile = savefile.showSaveDialog(WhiteBoard.getInstance().getPrimaryStage());
+            if (safile != null)
+            {
+                try
+                {
+                    Image snapshot = canvas.snapshot(null, null);
+                    ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", safile);
+                    new Alert(Alert.AlertType.INFORMATION, "Your canvas has been saved successfully.").show();
+                }
+                catch (IOException e)
+                {
+                    //e.printStackTrace();
+                    new Alert(Alert.AlertType.ERROR, "Unable to save canvas: " + e).show();
+                    //System.out.println("Unable to save image: " + e);
+                }
+            }
         }
-        catch (IOException e)
+        else
         {
-            //e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Unable to save image: " + e).show();
-            //System.out.println("Unable to save image: " + e);
+            try
+            {
+                Image snapshot = canvas.snapshot(null, null);
+                ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", safile);
+                new Alert(Alert.AlertType.INFORMATION, "Your canvas has been saved successfully.").show();
+            }
+            catch (IOException e)
+            {
+                //e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Unable to save canvas: " + e).show();
+                //System.out.println("Unable to save image: " + e);
+            }
         }
     }
 
