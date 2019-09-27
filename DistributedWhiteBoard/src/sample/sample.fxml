@@ -27,17 +27,11 @@
               <menus>
                 <Menu mnemonicParsing="false" text="File">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="Close" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
+                    <MenuItem fx:id="newoption" mnemonicParsing="false" onAction="#clicknew" text="New Canvas" />
+                        <MenuItem fx:id="openoption" mnemonicParsing="false" onAction="#clickopen" text="Open..." />
+                        <MenuItem fx:id="saveoption" mnemonicParsing="false" onAction="#clicksave" text="Save" />
+                        <MenuItem fx:id="saveasoption" mnemonicParsing="false" onAction="#clicksaveas" text="Save As..." />
+                        <MenuItem fx:id="closeoption" mnemonicParsing="false" onAction="#clickclose" text="Close" />
                   </items>
                 </Menu>
               </menus>

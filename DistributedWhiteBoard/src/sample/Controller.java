@@ -1,25 +1,33 @@
 package sample;
 
+import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseDragEvent;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.ArcType;
+import javafx.stage.FileChooser;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Array;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.ArrayList;
 
@@ -47,6 +55,21 @@ public class Controller implements Initializable
     @FXML
     private Button sendbutton;
 
+    @FXML
+    private MenuItem newoption;
+
+    @FXML
+    private MenuItem openoption;
+
+    @FXML
+    private MenuItem saveoption;
+
+    @FXML
+    private MenuItem saveasoption;
+
+    @FXML
+    private MenuItem closeoption;
+
     private double init_x = 0;
     private double init_y = 0;
     private double x;
@@ -61,10 +84,10 @@ public class Controller implements Initializable
     {
 
         brushTool = canvas.getGraphicsContext2D();
-
+        //brushTool.setLineWidth(1);
         toolSelected = "brush"; // default tool selected
-        bsize.setText("15"); //Default size
-        colorpicker.setValue(Color.CYAN); //Default color
+        bsize.setText("10"); //Default size
+        colorpicker.setValue(Color.BLACK); //Default color
 
         canvas.setOnMousePressed( e -> {
             brushTool.setFill(colorpicker.getValue());
@@ -115,7 +138,6 @@ public class Controller implements Initializable
                 }
             }
         });
-
 
         canvas.setOnMouseReleased( e -> {
 
@@ -212,39 +234,116 @@ public class Controller implements Initializable
             System.out.println("Brush Size = " + bsize.getText());
         });
     }
+
     @FXML
-    public void toolselected(ActionEvent e){
+    public void toolselected(ActionEvent e)
+    {
         toolSelected = "brush";
     }
 
     @FXML
-    public void rectSelected(ActionEvent e){
+    public void rectSelected(ActionEvent e)
+    {
         toolSelected = "rectangle";
     }
 
     @FXML
-    public void circleSelected(ActionEvent e){
+    public void circleSelected(ActionEvent e)
+    {
         toolSelected = "circle";
     }
+
     @FXML
-    public void ovalSelected(ActionEvent e){
+    public void ovalSelected(ActionEvent e)
+    {
         toolSelected = "oval";
     }
+
     @FXML
-    public void eraserSelected(ActionEvent e){
+    public void eraserSelected(ActionEvent e)
+    {
         toolSelected = "eraser";
     }
+
     @FXML
-    public void lineSelected(ActionEvent e){
+    public void lineSelected(ActionEvent e)
+    {
         toolSelected = "line";
     }
+
     @FXML
-    private void handleButtonAction (ActionEvent event)
+    public void handleButtonAction (ActionEvent event)
     {
         String messagec = chatmessage.getText();
         //operate(message_s, in, ou);
         chatmessage.setText("");
         String existingmess = textdisplay.getText();
         textdisplay.setText(existingmess + "\n\nClient 1: " + messagec);
+    }
+
+    @FXML
+    public void clicknew (ActionEvent event)
+    {
+        System.exit(0);
+    }
+
+    @FXML
+    public void clickopen (ActionEvent event)
+    {
+        System.exit(0);
+    }
+
+    @FXML
+    public void clicksaveas (ActionEvent event) //Saves the current session with a user-defined name
+    {
+        FileChooser savefile = new FileChooser();
+        savefile.setTitle("Save File As...");
+        File file = savefile.showSaveDialog(WhiteBoard.getInstance().getPrimaryStage());
+        if (file != null)
+        {
+            try
+            {
+                Image snapshot = canvas.snapshot(null, null);
+                ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", file);
+                new Alert(Alert.AlertType.INFORMATION, "Your file has been saved successfully.").show();
+            }
+            catch (IOException e)
+            {
+                //e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Unable to save image: " + e).show();
+                //System.out.println("Unable to save image: " + e);
+            }
+        }
+    }
+
+    @FXML
+    public void clicksave (ActionEvent event) //Saves the current session by default as saved_session.png
+    {
+        try
+        {
+            Image snapshot = canvas.snapshot(null, null);
+            ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", new File("saved_session.png"));
+            new Alert(Alert.AlertType.INFORMATION, "Your file has been saved successfully.").show();
+        }
+        catch (IOException e)
+        {
+            //e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Unable to save image: " + e).show();
+            //System.out.println("Unable to save image: " + e);
+        }
+    }
+
+    @FXML
+    public void clickclose (ActionEvent event) //Closes the current session
+    {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Close Whiteboard");
+        alert.setHeaderText("Are you sure you want to exit the Whiteboard?");
+        alert.setContentText("Unsaved changes will be lost.");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK)
+        {
+            Platform.exit();
+        }
     }
 }
