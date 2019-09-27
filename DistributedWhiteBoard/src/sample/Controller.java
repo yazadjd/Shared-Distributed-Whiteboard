@@ -15,6 +15,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -49,13 +51,13 @@ public class Controller implements Initializable
     private Canvas canvas;
 
     @FXML
-    private Label textdisplay;
+    private TextArea textdisplay;
 
     @FXML
     private TextArea chatmessage;
 
-    @FXML
-    private Button sendbutton;
+    //@FXML
+    //private Button sendbutton;
 
     @FXML
     private MenuItem newoption;
@@ -88,6 +90,7 @@ public class Controller implements Initializable
 
         brushTool = canvas.getGraphicsContext2D();
         //brushTool.setLineWidth(1);
+        brushTool.setFill(Color.WHITE);
         toolSelected = "brush"; // default tool selected
         bsize.setText("10"); //Default size
         colorpicker.setValue(Color.BLACK); //Default color
@@ -112,7 +115,7 @@ public class Controller implements Initializable
             }
 
             if(toolSelected.matches("eraser") && !bsize.getText().isEmpty()){
-                brushTool.setFill(Paint.valueOf("#f2f2f2"));
+                brushTool.setFill(Paint.valueOf("#ffffff")); //#f2f2f2
                 brushTool.fillRoundRect(x, y, size, size, size, size);
             }
 
@@ -274,6 +277,8 @@ public class Controller implements Initializable
         toolSelected = "line";
     }
 
+    /*<Button fx:id="sendbutton" layoutX="272.0" layoutY="637.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Send" />
+    <Label fx:id="textdisplay" alignment="TOP_LEFT" layoutX="12.0" layoutY="60.0" prefHeight="525.0" prefWidth="310.0" wrapText="true" />
     @FXML
     public void handleButtonAction (ActionEvent event)
     {
@@ -282,6 +287,19 @@ public class Controller implements Initializable
         chatmessage.setText("");
         String existingmess = textdisplay.getText();
         textdisplay.setText(existingmess + "\n\nClient 1: " + messagec);
+    }*/
+
+    @FXML
+    public void EnterPressed (KeyEvent keyEvent)
+    {
+        if (keyEvent.getCode() == KeyCode.ENTER)
+        {
+            String messagec = chatmessage.getText();
+            messagec = messagec.trim();
+            chatmessage.setText("");
+            String existingmess = textdisplay.getText();
+            textdisplay.setText(existingmess + "\n\nClient 1: " + messagec);
+        }
     }
 
     @FXML

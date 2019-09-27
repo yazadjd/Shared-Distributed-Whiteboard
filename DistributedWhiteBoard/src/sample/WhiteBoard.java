@@ -39,7 +39,7 @@ public class WhiteBoard extends Application
         this.setPrimaryStage(stage);
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         stage.setTitle("White Board");
-        stage.setScene(new Scene(root, 1280, 720));
+        stage.setScene(new Scene(root, 1280, 720, Color.WHITE));
         stage.show();
     }
 
