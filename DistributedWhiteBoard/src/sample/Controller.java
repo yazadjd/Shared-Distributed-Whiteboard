@@ -25,10 +25,8 @@ import javafx.stage.FileChooser;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.Socket;
 import java.net.URL;
 import java.sql.Array;
 import java.util.Optional;
@@ -82,12 +80,49 @@ public class Controller implements Initializable
     private String toolSelected;
     private GraphicsContext brushTool;
     private File safile;
+    public static Socket clientSocket;
+    public static DataInputStream ipStream;
+    public static DataOutputStream opStream;
+    String incomingMsg = "";
 
+    public void socketInitialize() throws IOException {
+        clientSocket = new Socket("localhost", 2000);
+        ipStream = new DataInputStream(clientSocket.getInputStream());
+        opStream = new DataOutputStream(clientSocket.getOutputStream());
+    }
+    public void sendCanvas() throws IOException {
+        opStream.writeUTF("Hello Canvas Sending");
+    }
+
+    public void sendMessage() throws IOException {
+        opStream.writeUTF("Message sending");
+    }
+
+    public void threadInitialise(URL url, ResourceBundle resourceBundle){
+        try {
+            socketInitialize();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Thread t = new Thread(() -> handleCanvas(url, resourceBundle));
+        t.start();
+        Thread t2 = new Thread(() -> {
+            try {
+                handleChat();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        t2.start();
+    }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle)
-    {
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        threadInitialise(url, resourceBundle);
 
+    }
+
+    private void handleCanvas(URL url, ResourceBundle resourceBundle) {
         brushTool = canvas.getGraphicsContext2D();
         //brushTool.setLineWidth(1);
         brushTool.setFill(Color.WHITE);
@@ -234,6 +269,11 @@ public class Controller implements Initializable
                 }
 
             }
+            try {
+                sendCanvas();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
             System.out.println("Arr list x = " + arrlistx);
             System.out.println("Arr list y = " + arrlisty);
             System.out.println("Color = " + colorpicker.getValue());
@@ -288,17 +328,26 @@ public class Controller implements Initializable
         String existingmess = textdisplay.getText();
         textdisplay.setText(existingmess + "\n\nClient 1: " + messagec);
     }*/
-
+    private void handleChat() throws IOException {
+        while(true){
+            incomingMsg = ipStream.readUTF();
+            if (incomingMsg != "") {
+                String existing_mess = textdisplay.getText();
+                textdisplay.setText(existing_mess + "\n\nServer: " + incomingMsg);
+                incomingMsg = "";
+            }
+        }
+    }
     @FXML
-    public void EnterPressed (KeyEvent keyEvent)
-    {
+    public void EnterPressed (KeyEvent keyEvent) throws IOException {
         if (keyEvent.getCode() == KeyCode.ENTER)
         {
             String messagec = chatmessage.getText();
             messagec = messagec.trim();
             chatmessage.setText("");
-            String existingmess = textdisplay.getText();
-            textdisplay.setText(existingmess + "\n\nClient 1: " + messagec);
+            String existing_mess = textdisplay.getText();
+            textdisplay.setText(existing_mess + "\n\nClient 1: " + messagec);
+            opStream.writeUTF(messagec);
         }
     }
 

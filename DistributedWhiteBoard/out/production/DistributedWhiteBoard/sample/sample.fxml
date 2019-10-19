@@ -23,17 +23,17 @@
       <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="921.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
          <children>
             <MenuBar layoutX="-1.0" layoutY="7.0" prefHeight="29.0" prefWidth="921.0">
-              <menus>
-                <Menu mnemonicParsing="false" text="File">
-                  <items>
-                    <MenuItem fx:id="newoption" mnemonicParsing="false" onAction="#clicknew" text="New Canvas" />
+               <menus>
+                  <Menu mnemonicParsing="false" text="File">
+                     <items>
+                        <MenuItem fx:id="newoption" mnemonicParsing="false" onAction="#clicknew" text="New Canvas" />
                         <MenuItem fx:id="openoption" mnemonicParsing="false" onAction="#clickopen" text="Open..." />
                         <MenuItem fx:id="saveoption" mnemonicParsing="false" onAction="#clicksave" text="Save" />
                         <MenuItem fx:id="saveasoption" mnemonicParsing="false" onAction="#clicksaveas" text="Save As..." />
                         <MenuItem fx:id="closeoption" mnemonicParsing="false" onAction="#clickclose" text="Close" />
-                  </items>
-                </Menu>
-              </menus>
+                     </items>
+                  </Menu>
+               </menus>
             </MenuBar>
             <VBox layoutX="-1.0" layoutY="43.0" prefHeight="47.0" prefWidth="921.0">
                <children>
@@ -65,7 +65,7 @@
             </StackPane>
          </children>
       </Pane>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="702.0" prefWidth="350.0">
+      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="702.0" prefWidth="350.0">
          <children>
             <TextArea fx:id="textdisplay" editable="false" layoutX="15.0" layoutY="57.0" prefHeight="525.0" prefWidth="320.0" wrapText="true" />
             <TextArea fx:id="chatmessage" layoutX="22.0" layoutY="601.0" onKeyPressed="#EnterPressed" prefHeight="99.0" prefWidth="305.0" wrapText="true" />
