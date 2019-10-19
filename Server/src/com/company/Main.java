@@ -8,6 +8,7 @@ import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import org.json.*;
 
 public class Main {
     public static int counter = 0;
@@ -53,8 +54,9 @@ public class Main {
 
             while (true) {
                 String new_message = input.readUTF();
-                if (new_message != "") {
-                    broadcastMessageToOtherClients(new_message, clientSocket);
+                if (message_content != "") {
+                    String client_username = (String) message_from_client.get("ClientUsername");
+                    broadcastMessageToOtherClients(message_content, clientSocket, client_username);
                 }
             }
         } catch (IOException e) {
@@ -62,7 +64,7 @@ public class Main {
         }
     }
 
-    public static void broadcastMessageToOtherClients(String message, Socket clientSocket) throws IOException {
+    public static void broadcastMessageToOtherClients(String message, Socket clientSocket, String client_username) throws IOException {
         for (int i = 0; i < clients_socket_dir.size(); i++) {
             if(clients_socket_dir.get(i) == clientSocket) {
                 continue;

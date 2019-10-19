@@ -32,6 +32,7 @@ import java.sql.Array;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.ArrayList;
+import org.json.JSONObject;
 
 public class Controller implements Initializable
 {
@@ -83,6 +84,9 @@ public class Controller implements Initializable
     public static Socket clientSocket;
     public static DataInputStream ipStream;
     public static DataOutputStream opStream;
+    public String username;
+
+
     String incomingMsg = "";
 
     public void socketInitialize() throws IOException {
@@ -118,8 +122,15 @@ public class Controller implements Initializable
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        threadInitialise(url, resourceBundle);
+        TextInputDialog username_dialog = new TextInputDialog();
+        username_dialog.setTitle("USERNAME");
+        username_dialog.setContentText("Please Enter a Suitable Username");
+        Optional<String> user_name = username_dialog.showAndWait();
+        if (user_name.isPresent()){
+            username = user_name.get();
+        }
 
+        threadInitialise(url, resourceBundle);
     }
 
     private void handleCanvas(URL url, ResourceBundle resourceBundle) {
@@ -342,12 +353,16 @@ public class Controller implements Initializable
     public void EnterPressed (KeyEvent keyEvent) throws IOException {
         if (keyEvent.getCode() == KeyCode.ENTER)
         {
-            String messagec = chatmessage.getText();
-            messagec = messagec.trim();
+            JSONObject message_parser = new JSONObject();
+            message_parser.put("Request_Type", "Chat");
+            message_parser.put("ClientUsername", username);
+            String message_chat = chatmessage.getText();
+            message_chat = message_chat.trim();
             chatmessage.setText("");
             String existing_mess = textdisplay.getText();
-            textdisplay.setText(existing_mess + "\n\nClient 1: " + messagec);
-            opStream.writeUTF(messagec);
+            textdisplay.setText(existing_mess + "\n\nClient 1: " + message_chat);
+            message_parser.put("Message_Content", message_chat);
+            opStream.writeUTF(String.valueOf(message_parser));
         }
     }
 
