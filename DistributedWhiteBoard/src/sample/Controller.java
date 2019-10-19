@@ -25,6 +25,7 @@ import javafx.stage.FileChooser;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.Socket;
 import java.net.URL;
@@ -97,11 +98,33 @@ public class Controller implements Initializable
         opStream = new DataOutputStream(clientSocket.getOutputStream());
     }
     public void sendCanvas() throws IOException {
-        opStream.writeUTF("Hello Canvas Sending");
+        JSONObject message_parser = new JSONObject();
+        message_parser.put("Request_Type", "Canvas");
+        message_parser.put("ClientUsername", username);
+        //opStream.writeUTF("Hello Canvas Sending");
+        try
+        {
+            Image snapshot = canvas.snapshot(null, null);
+            BufferedImage bImage = SwingFXUtils.fromFXImage(snapshot, null);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(bImage, "png", baos );
+            byte [] data = baos.toByteArray();
+            message_parser.put("CanvasLength", String.valueOf(data.length));
+            opStream.writeUTF(String.valueOf(message_parser));
+            opStream.write(data);
+            //new Alert(Alert.AlertType.INFORMATION, "Your canvas has been saved successfully.").show();
+        }
+        catch (IOException e)
+        {
+            //e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Unable to send canvas: " + e).show();
+            //System.out.println("Unable to save image: " + e);
+        }
     }
 
-    public void sendMessage() throws IOException {
-        opStream.writeUTF("Message sending");
+    public void sendMessage(String m) throws IOException {
+        opStream.writeUTF(m);
+        //opStream.writeUTF("Message sending");
     }
 
     public void threadInitialise(URL url, ResourceBundle resourceBundle){
@@ -287,10 +310,6 @@ public class Controller implements Initializable
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            System.out.println("Arr list x = " + arrlistx);
-            System.out.println("Arr list y = " + arrlisty);
-            System.out.println("Color = " + colorpicker.getValue());
-            System.out.println("Brush Size = " + bsize.getText());
         });
     }
 
@@ -344,15 +363,31 @@ public class Controller implements Initializable
     private void handleChat() throws IOException, ParseException {
         JSONParser mess_parser = new JSONParser();
 
-        while(true){
-            incomingMsg = ipStream.readUTF();
-            JSONObject server_jason = (JSONObject) mess_parser.parse(incomingMsg);
-            String server_msg = (String) server_jason.get("Message_Content");
-            String other_client_username = (String) server_jason.get("ClientUsername");
-            if (server_msg != "") {
-                String existing_mess = textdisplay.getText();
-                textdisplay.setText(existing_mess + "\n\n" + other_client_username + ": " + server_msg);
-                incomingMsg = "";
+        while (true) {
+            String new_message = ipStream.readUTF();
+            JSONObject client_message = (JSONObject) mess_parser.parse(new_message);
+            String request_type = (String) client_message.get("Request_Type");
+            String user = (String) client_message.get("ClientUsername");
+            if (request_type.matches("Chat")) {
+                String message_content = (String) client_message.get("Message_Content");
+                if (!message_content.equals("")) {
+                    String existing_mess = textdisplay.getText();
+                    textdisplay.setText(existing_mess + "\n\n"+ user + ": " + message_content);
+                    incomingMsg = "";
+                }
+            }
+            else if (request_type.matches("Canvas")){
+                String canvas_length = (String) client_message.get("CanvasLength");
+                Integer length = Integer.parseInt(canvas_length);
+                if (length > 0)
+                {
+                    byte[] message = new byte[length];
+                    ipStream.readFully(message, 0, message.length);
+                    ByteArrayInputStream bais = new ByteArrayInputStream(message);
+                    BufferedImage bImage2 = ImageIO.read(bais);
+                    Image img = SwingFXUtils.toFXImage(bImage2, null);
+                    brushTool.drawImage(img, 0, 0);
+                }
             }
         }
     }
@@ -369,7 +404,7 @@ public class Controller implements Initializable
             String existing_mess = textdisplay.getText();
             textdisplay.setText(existing_mess + "\n\n" + username + ": " + message_chat);
             message_parser.put("Message_Content", message_chat);
-            opStream.writeUTF(String.valueOf(message_parser));
+            sendMessage(String.valueOf(message_parser));
         }
     }
 
