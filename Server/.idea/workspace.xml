@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5beba0c7-2bb3-4fd0-9853-30da9981af56" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/org_itest_itest_json_simple_parser_1_5_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/org_json_json_20190722.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/libraries/json_simple_1_1_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/json_simple_1_1_1.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/DistributedWhiteBoard.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/DistributedWhiteBoard.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/out/production/DistributedWhiteBoard/sample/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/out/production/DistributedWhiteBoard/sample/Controller.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/src/sample/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/src/sample/Controller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Server.iml" afterDir="false" />
@@ -79,7 +80,8 @@
       <updated>1571369986575</updated>
       <workItem from="1571369990762" duration="5275000" />
       <workItem from="1571397001554" duration="8128000" />
-      <workItem from="1571458742367" duration="2784000" />
+      <workItem from="1571458742367" duration="3000000" />
+      <workItem from="1571466089447" duration="2756000" />
     </task>
     <servers />
   </component>
@@ -91,7 +93,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>

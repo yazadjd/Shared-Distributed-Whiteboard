@@ -8,7 +8,9 @@ import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import org.json.*;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class Main {
     public static int counter = 0;
@@ -46,7 +48,7 @@ public class Main {
     private static void serveClient(Socket socket) {
         try (Socket clientSocket = socket) {
 
-
+            JSONParser mess_parser = new JSONParser();
             DataInputStream input = new DataInputStream(clientSocket.getInputStream());
             DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream());
 
@@ -54,23 +56,26 @@ public class Main {
 
             while (true) {
                 String new_message = input.readUTF();
-                if (message_content != "") {
-                    String client_username = (String) message_from_client.get("ClientUsername");
-                    broadcastMessageToOtherClients(message_content, clientSocket, client_username);
+                JSONObject client_message = (JSONObject) mess_parser.parse(new_message);
+                String message_content = (String) client_message.get("Message_Content");
+                if (!message_content.equals("")) {
+                    broadcastMessageToOtherClients(client_message, clientSocket);
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
     }
 
-    public static void broadcastMessageToOtherClients(String message, Socket clientSocket, String client_username) throws IOException {
+    public static void broadcastMessageToOtherClients(JSONObject client_message, Socket clientSocket) throws IOException {
+
+
         for (int i = 0; i < clients_socket_dir.size(); i++) {
             if(clients_socket_dir.get(i) == clientSocket) {
                 continue;
             }
             else{
-                (new DataOutputStream(clients_socket_dir.get(i).getOutputStream())).writeUTF(message);
+                (new DataOutputStream(clients_socket_dir.get(i).getOutputStream())).writeUTF(String.valueOf(client_message));
             }
         }
     }

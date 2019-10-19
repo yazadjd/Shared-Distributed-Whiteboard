@@ -32,7 +32,9 @@ import java.sql.Array;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.ArrayList;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 public class Controller implements Initializable
 {
@@ -113,7 +115,7 @@ public class Controller implements Initializable
         Thread t2 = new Thread(() -> {
             try {
                 handleChat();
-            } catch (IOException e) {
+            } catch (IOException | ParseException e) {
                 e.printStackTrace();
             }
         });
@@ -339,12 +341,17 @@ public class Controller implements Initializable
         String existingmess = textdisplay.getText();
         textdisplay.setText(existingmess + "\n\nClient 1: " + messagec);
     }*/
-    private void handleChat() throws IOException {
+    private void handleChat() throws IOException, ParseException {
+        JSONParser mess_parser = new JSONParser();
+
         while(true){
             incomingMsg = ipStream.readUTF();
-            if (incomingMsg != "") {
+            JSONObject server_jason = (JSONObject) mess_parser.parse(incomingMsg);
+            String server_msg = (String) server_jason.get("Message_Content");
+            String other_client_username = (String) server_jason.get("ClientUsername");
+            if (server_msg != "") {
                 String existing_mess = textdisplay.getText();
-                textdisplay.setText(existing_mess + "\n\nServer: " + incomingMsg);
+                textdisplay.setText(existing_mess + "\n\n" + other_client_username + ": " + server_msg);
                 incomingMsg = "";
             }
         }
@@ -360,7 +367,7 @@ public class Controller implements Initializable
             message_chat = message_chat.trim();
             chatmessage.setText("");
             String existing_mess = textdisplay.getText();
-            textdisplay.setText(existing_mess + "\n\nClient 1: " + message_chat);
+            textdisplay.setText(existing_mess + "\n\n" + username + ": " + message_chat);
             message_parser.put("Message_Content", message_chat);
             opStream.writeUTF(String.valueOf(message_parser));
         }
