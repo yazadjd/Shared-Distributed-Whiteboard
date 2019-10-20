@@ -19,6 +19,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         ServerSocketFactory factory = ServerSocketFactory.getDefault();
+
         clients_socket_dir = new ArrayList<Socket>();
 
         try(ServerSocket server = factory.createServerSocket(2000)) {
@@ -52,6 +53,7 @@ public class Main {
             DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream());
 
             clients_socket_dir.add(clientSocket);
+            
 
             while (true) {
                 String new_message = input.readUTF();
@@ -76,6 +78,7 @@ public class Main {
                 }
             }
         } catch (IOException | ParseException e) {
+            clients_socket_dir.remove(socket);
             e.printStackTrace();
         }
     }
