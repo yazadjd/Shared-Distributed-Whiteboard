@@ -21,8 +21,8 @@ public class Main {
         ServerSocketFactory factory = ServerSocketFactory.getDefault();
         clients_socket_dir = new ArrayList<Socket>();
 
-        try(ServerSocket server = factory.createServerSocket(2000))
-        {
+        try(ServerSocket server = factory.createServerSocket(2000)) {
+
             System.out.println("Waiting for client connection-");
 
             // Wait for connections.
@@ -37,7 +37,6 @@ public class Main {
                 t.start();
 
             }
-
         }
         catch (IOException e)
         {

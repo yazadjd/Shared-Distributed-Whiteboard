@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5beba0c7-2bb3-4fd0-9853-30da9981af56" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/out/production/DistributedWhiteBoard/sample/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/out/production/DistributedWhiteBoard/sample/Controller.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/src/sample/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/src/sample/Controller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Server/com/company/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Server/com/company/Main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Main.java" afterDir="false" />
@@ -76,7 +74,8 @@
       <workItem from="1571369990762" duration="5275000" />
       <workItem from="1571397001554" duration="8128000" />
       <workItem from="1571458742367" duration="3000000" />
-      <workItem from="1571466089447" duration="11875000" />
+      <workItem from="1571466089447" duration="14231000" />
+      <workItem from="1571530213961" duration="418000" />
     </task>
     <servers />
   </component>
@@ -95,5 +94,16 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/com/company/Main.java</url>
+          <line>67</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
