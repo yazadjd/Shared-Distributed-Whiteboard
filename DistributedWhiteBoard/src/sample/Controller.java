@@ -34,6 +34,8 @@ import java.sql.Array;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -112,6 +114,8 @@ public class Controller implements Initializable
         clientSocket = new Socket("localhost", 2000);
         ipStream = new DataInputStream(clientSocket.getInputStream());
         opStream = new DataOutputStream(clientSocket.getOutputStream());
+
+        //message_parser.put("ClientUsername", username);
         try
         {
             ObjectInputStream objectInput = new ObjectInputStream(clientSocket.getInputStream());
@@ -203,7 +207,7 @@ public class Controller implements Initializable
         Thread t2 = new Thread(() -> {
             try {
                 handleChat();
-            } catch (IOException | ParseException e) {
+            } catch (IOException | ParseException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
@@ -450,7 +454,7 @@ public class Controller implements Initializable
     @FXML
     public void showmemberlist (ActionEvent event)
     {
-        String memlist = "";;
+        String memlist = "";
         //new Alert(Alert.AlertType.INFORMATION, username).show();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Members List");
@@ -463,7 +467,7 @@ public class Controller implements Initializable
         alert.show();
     }
 
-    private void handleChat() throws IOException, ParseException {
+    private void handleChat() throws IOException, ParseException, InterruptedException {
         JSONParser mess_parser = new JSONParser();
 
         while (true) {
@@ -479,7 +483,8 @@ public class Controller implements Initializable
                     incomingMsg = "";
                 }
             }
-            else if (request_type.matches("Canvas")){
+            else if (request_type.matches("Canvas"))
+            {
                 String canvas_length = (String) client_message.get("CanvasLength");
                 Integer length = Integer.parseInt(canvas_length);
                 if (length > 0)
@@ -515,6 +520,38 @@ public class Controller implements Initializable
                         sendCanvas();
                     }
                 }
+            }
+            else if (request_type.matches("Member"))
+            {
+                try
+                {
+                    ObjectInputStream objectInput = new ObjectInputStream(clientSocket.getInputStream());
+                    try
+                    {
+                        Object object = objectInput.readObject();
+                        clients_uname_list =  (ArrayList<String>) object;
+                    }
+                    catch (ClassNotFoundException e)
+                    {
+                        //e.printStackTrace();
+                        System.out.println(e);
+                    }
+                }
+                catch (IOException e)
+                {
+                    //e.printStackTrace();
+                    System.out.println(e);
+                }
+            }
+            else if (request_type.matches("Exit"))
+            {
+                //canvas.setAccessibleText("The manager has terminated the session");
+                brushTool.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+                brushTool.strokeText("The manager has terminated the session", canvas.getWidth()/2, canvas.getHeight()/2);
+                //new Alert(Alert.AlertType.INFORMATION, "The manager has terminated the session").show();
+                //System.out.println("The manager has terminated the session");
+                TimeUnit.SECONDS.sleep(5);
+                Platform.exit();
             }
         }
     }
@@ -647,7 +684,7 @@ public class Controller implements Initializable
     }
 
     @FXML
-    public void clickclose (ActionEvent event) //Closes the current session
+    public void clickclose (ActionEvent event) throws IOException //Closes the current session
     {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Close Whiteboard");
@@ -656,6 +693,13 @@ public class Controller implements Initializable
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK)
         {
+            if (manager == 1)
+            {
+                JSONObject message_parser = new JSONObject();
+                message_parser.put("Request_Type", "Exit");
+                message_parser.put("ClientUsername", "random");
+                opStream.writeUTF(String.valueOf(message_parser));
+            }
             Platform.exit();
         }
     }

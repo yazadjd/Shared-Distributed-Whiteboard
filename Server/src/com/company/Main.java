@@ -71,6 +71,29 @@ public class Main
             String first_message = input.readUTF();
             clients_uname_dir.add(first_message);
             System.out.println(clients_uname_dir);
+            JSONObject message_parser = new JSONObject();
+            message_parser.put("Request_Type", "Member");
+            message_parser.put("ClientUsername", "random");
+            try
+            {
+                //ObjectOutputStream objectOutput = new ObjectOutputStream(clientSocket.getOutputStream());
+                for (int i = 0; i < clients_socket_dir.size(); i++)
+                {
+
+                    if(clients_socket_dir.get(i) == clientSocket)
+                    {
+                        continue;
+                    }
+                    else{
+                        (new DataOutputStream(clients_socket_dir.get(i).getOutputStream())).writeUTF(String.valueOf(message_parser));
+                        (new ObjectOutputStream(clients_socket_dir.get(i).getOutputStream())).writeObject(clients_uname_dir);
+                    }
+                }
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
             //JSONParser socket_parser = new JSONParser();
             //JSONObject socket_dict = (JSONObject) socket_parser.parse(first_message);
 
@@ -98,6 +121,10 @@ public class Main
                         input.readFully(message, 0, message.length);
                         broadcastCanvasToOtherClients(client_message, message, clientSocket);
                     }
+                }
+                else if (request_type.matches("Exit"))
+                {
+                    broadcastMessageToOtherClients(client_message, clientSocket);
                 }
             }
         }
