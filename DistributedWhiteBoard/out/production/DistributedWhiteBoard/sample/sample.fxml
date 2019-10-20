@@ -4,6 +4,7 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -24,7 +25,7 @@
          <children>
             <MenuBar layoutX="-1.0" layoutY="7.0" prefHeight="29.0" prefWidth="921.0">
                <menus>
-                  <Menu mnemonicParsing="false" text="File">
+                  <Menu fx:id="filemenu" mnemonicParsing="false" text="File">
                      <items>
                         <MenuItem fx:id="newoption" mnemonicParsing="false" onAction="#clicknew" text="New Canvas" />
                         <MenuItem fx:id="openoption" mnemonicParsing="false" onAction="#clickopen" text="Open..." />
@@ -32,6 +33,11 @@
                         <MenuItem fx:id="saveasoption" mnemonicParsing="false" onAction="#clicksaveas" text="Save As..." />
                         <MenuItem fx:id="closeoption" mnemonicParsing="false" onAction="#clickclose" text="Close" />
                      </items>
+                  </Menu>
+                  <Menu fx:id="privilegemenu" mnemonicParsing="false" text="Privileges">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Action 1" />
+                    </items>
                   </Menu>
                </menus>
             </MenuBar>
@@ -51,6 +57,11 @@
                         <Button fx:id="eraser" mnemonicParsing="false" onAction="#eraserSelected" text="Eraser" />
                         <ColorPicker fx:id="colorpicker" />
                         <TextField fx:id="bsize" />
+                        <Label fx:id="ismanager" prefHeight="25.0" prefWidth="72.0" scaleX="1.5" scaleY="1.5" text="Label" translateX="100.0">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Label>
                      </children>
                      <padding>
                         <Insets left="10.0" top="10.0" />
@@ -67,7 +78,8 @@
       </Pane>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="702.0" prefWidth="350.0">
          <children>
-            <TextArea fx:id="textdisplay" editable="false" layoutX="15.0" layoutY="57.0" prefHeight="525.0" prefWidth="320.0" wrapText="true" />
+            <Button fx:id="showmembers" layoutX="123.0" layoutY="48.0" mnemonicParsing="false" onAction="#showmemberlist" text="Show Members" />
+            <TextArea fx:id="textdisplay" editable="false" layoutX="15.0" layoutY="95.0" prefHeight="487.0" prefWidth="320.0" wrapText="true" />
             <TextArea fx:id="chatmessage" layoutX="22.0" layoutY="601.0" onKeyPressed="#EnterPressed" prefHeight="99.0" prefWidth="305.0" wrapText="true" />
             <Text fill="#001272" layoutX="52.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to TeamChat!" textAlignment="CENTER" wrappingWidth="245.2060546875">
                <font>

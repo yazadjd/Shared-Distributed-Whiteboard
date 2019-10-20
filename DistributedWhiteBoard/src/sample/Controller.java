@@ -11,6 +11,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -75,6 +76,18 @@ public class Controller implements Initializable
 
     @FXML
     private MenuItem closeoption;
+
+    @FXML
+    private Menu filemenu;
+
+    @FXML
+    private Menu privilegemenu;
+
+    @FXML
+    private Button showmembers;
+
+    @FXML
+    private Label ismanager;
 
     private double init_x = 0;
     private double init_y = 0;
@@ -165,6 +178,10 @@ public class Controller implements Initializable
         toolSelected = "brush"; // default tool selected
         bsize.setText("10"); //Default size
         colorpicker.setValue(Color.BLACK); //Default color
+        //Use the below options for non-managers
+        filemenu.setDisable(true);
+        privilegemenu.setDisable(true);
+        ismanager.setText("");
 
         canvas.setOnMousePressed( e -> {
             brushTool.setFill(colorpicker.getValue());
@@ -347,6 +364,12 @@ public class Controller implements Initializable
     public void lineSelected(ActionEvent e)
     {
         toolSelected = "line";
+    }
+
+    @FXML
+    public void showmemberlist (ActionEvent event)
+    {
+        new Alert(Alert.AlertType.INFORMATION, username).show();
     }
 
     /*<Button fx:id="sendbutton" layoutX="272.0" layoutY="637.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Send" />
