@@ -101,12 +101,12 @@ public class Controller implements Initializable
     public static DataInputStream ipStream;
     public static DataOutputStream opStream;
     public String username;
-
+    public static int flag = 0;
 
     String incomingMsg = "";
 
     public void socketInitialize() throws IOException {
-        clientSocket = new Socket("localhost", 2000);
+        clientSocket = new Socket("192.168.43.124", 2000);
         ipStream = new DataInputStream(clientSocket.getInputStream());
         opStream = new DataOutputStream(clientSocket.getOutputStream());
     }
@@ -170,7 +170,29 @@ public class Controller implements Initializable
 
         threadInitialise(url, resourceBundle);
     }
-
+    public void brushfill(double x, double  y, double size) {
+        brushTool.setFill(colorpicker.getValue());
+        size = Double.parseDouble(bsize.getText());
+        brushTool.fillRoundRect(x, y, size, size, size, size);
+    }
+    public void erase(double x, double y, double size) {
+        brushTool.setFill(Paint.valueOf("#ffffff"));
+        size = Double.parseDouble(bsize.getText());
+        brushTool.fillRoundRect(x, y, size, size, size, size);
+    }
+    public void rectangle(double x, double y, double width, double height) {
+        brushTool.setFill(colorpicker.getValue());
+        brushTool.fillRect(x, y, width, height);
+    }
+    public void Ellipse(double x, double y, double axisx, double axisy) {
+        brushTool.setFill(colorpicker.getValue());
+        brushTool.fillOval(x, y, axisx, axisy);
+    }
+    public void drawLine(double init_x, double init_y, double x, double y){
+        brushTool.setStroke(colorpicker.getValue());
+        brushTool.setLineWidth(size);
+        brushTool.strokeLine(init_x, init_y, x, y);
+    }
     private void handleCanvas(URL url, ResourceBundle resourceBundle) {
         brushTool = canvas.getGraphicsContext2D();
         //brushTool.setLineWidth(1);
@@ -197,38 +219,34 @@ public class Controller implements Initializable
 
             x = e.getX() - size / 2;
             y = e.getY() - size / 2;
-            if (toolSelected.matches("brush")) {
+            if(toolSelected.matches("eraser") && !bsize.getText().isEmpty()){
+                erase(x, y, size);
                 arrlistx.add(x);
                 arrlisty.add(y);
             }
 
-            if(toolSelected.matches("eraser") && !bsize.getText().isEmpty()){
-                brushTool.setFill(Paint.valueOf("#ffffff")); //#f2f2f2
-                brushTool.fillRoundRect(x, y, size, size, size, size);
-            }
-
             if(toolSelected.matches("brush") && !bsize.getText().isEmpty()){
-                brushTool.setFill(colorpicker.getValue());
-                brushTool.fillRoundRect(x, y, size, size, size, size);
+                brushfill(x, y, size);
+                arrlistx.add(x);
+                arrlisty.add(y);
             }
             if(toolSelected.matches("rectangle")){
-                brushTool.setFill(colorpicker.getValue());
+
                 if((x - init_x ) < 0) {
                     if ((y - init_y) < 0 ){
-                        brushTool.fillRect(x, y, init_x-x, init_y - y);
+                        rectangle(x, y, init_x-x, init_y - y);
                     }
                     else {
-                        brushTool.fillRect(x, init_y, init_x-x, y - init_y);
+                        rectangle(x, init_y, init_x-x, y - init_y);
                     }
                 }
                 else if ((x - init_x) > 0){
                     if ((y - init_y) > 0) {
-                        brushTool.fillRect(init_x, init_y,x - init_x  ,y - init_y);
+                        rectangle(init_x, init_y,x - init_x  ,y - init_y);
                     }
                     else {
-                        brushTool.fillRect(init_x, y, x - init_x, init_y - y);
+                        rectangle(init_x, y, x - init_x, init_y - y);
                     }
-
                 }
             }
         });
@@ -236,18 +254,16 @@ public class Controller implements Initializable
         canvas.setOnMouseReleased( e -> {
 
             if (toolSelected.matches("circle")) {
-                //brushTool.clearRect(init_x - 1, init_y - 1,(x - init_x + y - init_y)/2, (x - init_x + y - init_y)/2);
-                //brushTool.fillOval(init_x, init_y, (x - init_x + y - init_y)/2, (x - init_x + y - init_y)/2);
                 if((x - init_x ) < 0) {
                     if ((y - init_y) < 0 ){
-                        brushTool.fillOval(x, y, (init_x-x + init_y-y), (init_x-x + init_y-y));
+                        Ellipse(x, y, (init_x-x + init_y-y)/2, (init_x-x + init_y-y)/2);
                         arrlistx.add(x);
                         arrlistx.add((init_x-x + init_y-y)/2);
                         arrlisty.add(y);
                         arrlisty.add((init_x-x + init_y-y)/2);
                     }
                     else {
-                        brushTool.fillOval(x, y, (init_x-x + y - init_y)/2, (init_x-x + y - init_y)/2);
+                        Ellipse(x, y, (init_x-x + y - init_y)/2, (init_x-x + y - init_y)/2);
                         arrlistx.add(x);
                         arrlistx.add((init_x-x + y - init_y)/2);
                         arrlisty.add(y);
@@ -256,14 +272,14 @@ public class Controller implements Initializable
                 }
                 else if ((x - init_x) > 0) {
                     if ((y - init_y) > 0) {
-                        brushTool.fillOval(init_x, init_y, (x - init_x + y - init_y) / 2, (x - init_x + y - init_y) / 2);
+                        Ellipse(init_x, init_y, (x - init_x + y - init_y) / 2, (x - init_x + y - init_y) / 2);
                         arrlistx.add(init_x);
                         arrlistx.add((x - init_x + y - init_y) / 2);
                         arrlisty.add(init_y);
                         arrlisty.add((x - init_x + y - init_y) / 2);
                     }
                     else {
-                        brushTool.fillOval(init_x, init_y, (x - init_x + init_y - y) / 2, (x - init_x + init_y - y) / 2);
+                        Ellipse(init_x, init_y, (x - init_x + init_y - y) / 2, (x - init_x + init_y - y) / 2);
                         arrlistx.add(init_x);
                         arrlistx.add((x - init_x + init_y - y) / 2);
                         arrlisty.add(init_y);
@@ -272,9 +288,8 @@ public class Controller implements Initializable
                 }
             }
             if(toolSelected.matches("line") && !bsize.getText().isEmpty()){
-                brushTool.setStroke(colorpicker.getValue());
-                brushTool.setLineWidth(size);
-                brushTool.strokeLine(init_x,init_y, x, y);
+
+                drawLine(init_x, init_y, x, y);
                 arrlistx.add(init_x);
                 arrlistx.add(x);
                 arrlisty.add(init_y);
@@ -284,20 +299,20 @@ public class Controller implements Initializable
             {
                 arrlistx.add(init_x);
                 arrlisty.add(init_y);
-                arrlistx.add(x-init_x);
+                arrlistx.add(x - init_x);
                 arrlisty.add(y - init_y);
             }
             if (toolSelected.matches("oval")) {
                 if((x - init_x ) < 0) {
                     if ((y - init_y) < 0 ){
-                        brushTool.fillOval(x, y, init_x - x, init_y - y);
+                        Ellipse(x, y, init_x - x, init_y - y);
                         arrlistx.add(x);
                         arrlistx.add(init_x-x);
                         arrlisty.add(y);
                         arrlisty.add(init_y-y);
                     }
                     else {
-                        brushTool.fillOval(x, y, init_x - x , y - init_y);
+                        Ellipse(x, y, init_x - x , y - init_y);
                         arrlistx.add(x);
                         arrlistx.add(init_x-x);
                         arrlisty.add(y);
@@ -306,21 +321,20 @@ public class Controller implements Initializable
                 }
                 else if ((x - init_x) > 0) {
                     if ((y - init_y) > 0) {
-                        brushTool.fillOval(init_x, init_y, x - init_x, y - init_y);
+                        Ellipse(init_x, init_y, x - init_x, y - init_y);
                         arrlistx.add(init_x);
                         arrlistx.add(x - init_x);
                         arrlisty.add(init_y);
                         arrlisty.add(y - init_y);
                     }
                     else {
-                        brushTool.fillOval(init_x, init_y, x - init_x , init_y - y);
+                        Ellipse(init_x, init_y, x - init_x , init_y - y);
                         arrlistx.add(init_x);
                         arrlistx.add(x - init_x);
                         arrlisty.add(init_y);
                         arrlisty.add(init_y - y);
                     }
                 }
-
             }
             try {
                 sendCanvas();
@@ -409,11 +423,36 @@ public class Controller implements Initializable
                     ByteArrayInputStream bais = new ByteArrayInputStream(message);
                     BufferedImage bImage2 = ImageIO.read(bais);
                     Image img = SwingFXUtils.toFXImage(bImage2, null);
+                    while (canvas.isPressed()) {
+                        flag = 1;
+                    }
                     brushTool.drawImage(img, 0, 0);
+                    if (flag == 1) {
+                        if (toolSelected.matches("brush")) {
+                            for (int point = 0; point < arrlistx.size(); point++) {
+                                brushTool.fillRoundRect(arrlistx.get(point), arrlisty.get(point), size, size, size, size);
+                            }
+                        } else if (toolSelected.matches("eraser")) {
+                            for (int point = 0; point < arrlistx.size(); point++) {
+                                erase(arrlistx.get(point), arrlisty.get(point), size);
+                            }
+                        } else if (toolSelected.matches("rectangle")) {
+                            rectangle(arrlistx.get(0), arrlisty.get(0), arrlistx.get(1), arrlisty.get(1));
+                        } else if (toolSelected.matches("circle")) {
+                            Ellipse(arrlistx.get(0), arrlisty.get(0), arrlistx.get(1), arrlisty.get(1));
+                        } else if (toolSelected.matches("oval")) {
+                            Ellipse(arrlistx.get(0), arrlisty.get(0), arrlistx.get(1), arrlisty.get(1));
+                        } else if (toolSelected.matches("line")) {
+                            drawLine(arrlistx.get(0), arrlisty.get(0), arrlistx.get(1), arrlisty.get(1));
+                        }
+                        flag = 0;
+                        sendCanvas();
+                    }
                 }
             }
         }
     }
+
     @FXML
     public void EnterPressed (KeyEvent keyEvent) throws IOException {
         if (keyEvent.getCode() == KeyCode.ENTER)
