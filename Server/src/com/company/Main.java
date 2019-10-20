@@ -13,12 +13,14 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class Main {
+public class Main
+{
     public static int counter = 0;
     public static ArrayList<Socket> clients_socket_dir;
     public static ArrayList<String> clients_uname_dir = new ArrayList<String>();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException
+    {
 
         ServerSocketFactory factory = ServerSocketFactory.getDefault();
 
@@ -120,6 +122,7 @@ public class Main {
             }
         }
     }
+
     public static void broadcastCanvasToOtherClients(JSONObject client_message, byte[] message, Socket clientSocket) throws IOException {
         for (int i = 0; i < clients_socket_dir.size(); i++) {
             if(clients_socket_dir.get(i) == clientSocket) {

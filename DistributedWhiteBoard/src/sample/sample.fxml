@@ -57,9 +57,9 @@
                         <Button fx:id="eraser" mnemonicParsing="false" onAction="#eraserSelected" text="Eraser" />
                         <ColorPicker fx:id="colorpicker" />
                         <TextField fx:id="bsize" />
-                        <Label fx:id="ismanager" prefHeight="25.0" prefWidth="72.0" scaleX="1.5" scaleY="1.5" text="Label" translateX="100.0">
+                        <Label fx:id="ismanager" prefHeight="25.0" prefWidth="219.0" scaleY="1.5" text="Label" wrapText="true">
                            <font>
-                              <Font size="12.0" />
+                              <Font size="10.0" />
                            </font>
                         </Label>
                      </children>

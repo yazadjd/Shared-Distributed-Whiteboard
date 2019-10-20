@@ -103,11 +103,13 @@ public class Controller implements Initializable
     public String username;
     public static ArrayList<String> clients_uname_list;
     public static int flag = 0;
+    public static int manager = 0;
 
     String incomingMsg = "";
 
-    public void socketInitialize() throws IOException {
-        clientSocket = new Socket("192.168.43.124", 2000);
+    public void socketInitialize() throws IOException
+    {
+        clientSocket = new Socket("localhost", 2000);
         ipStream = new DataInputStream(clientSocket.getInputStream());
         opStream = new DataOutputStream(clientSocket.getOutputStream());
         try
@@ -135,6 +137,7 @@ public class Controller implements Initializable
         if (clients_uname_list.isEmpty())
         {
             System.out.println("You are the manager!");
+            manager = 1;
             //new Alert(Alert.AlertType.INFORMATION, "You are the manager!").show();
         }
         else
@@ -250,9 +253,24 @@ public class Controller implements Initializable
         bsize.setText("10"); //Default size
         colorpicker.setValue(Color.BLACK); //Default color
         //Use the below options for non-managers
-        filemenu.setDisable(true);
-        privilegemenu.setDisable(true);
-        ismanager.setText("");
+        if (manager == 0)
+        {
+            newoption.setDisable(true);
+            openoption.setDisable(true);
+            saveoption.setDisable(true);
+            saveasoption.setDisable(true);
+            privilegemenu.setDisable(true);
+            ismanager.setText("Username: " + username);
+        }
+        else
+        {
+            ismanager.setText("Manager: " + username);
+        }
+
+        /*if (manager == 0)
+        {
+
+        }*/
 
         canvas.setOnMousePressed( e -> {
             brushTool.setFill(colorpicker.getValue());
