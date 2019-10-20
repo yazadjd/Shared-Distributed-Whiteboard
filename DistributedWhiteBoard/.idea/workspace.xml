@@ -4,11 +4,13 @@
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DistributedWhiteBoard/sample/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DistributedWhiteBoard/sample/Controller.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DistributedWhiteBoard/sample/WhiteBoard.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DistributedWhiteBoard/sample/WhiteBoard.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/DistributedWhiteBoard/sample/Controller.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/sample/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Controller.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Server/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Server/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Server.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/out/production/Server/com/company/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/out/production/Server/com/company/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/src/com/company/Main.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -107,8 +109,11 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="dynamic.classpath" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Server" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
@@ -149,7 +154,7 @@
       </method>
     </configuration>
     <configuration name="WhiteBoard" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="ALTERNATIVE_JRE_PATH" value="11.0.3" />
+      <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="sample.WhiteBoard" />
       <module name="DistributedWhiteBoard" />
@@ -230,8 +235,7 @@
       <workItem from="1571463358040" duration="3102000" />
       <workItem from="1571469158993" duration="13625000" />
       <workItem from="1571530218659" duration="4008000" />
-      <workItem from="1571537461205" duration="941000" />
-      <workItem from="1571541502289" duration="7794000" />
+      <workItem from="1571537461205" duration="12643000" />
     </task>
     <servers />
   </component>

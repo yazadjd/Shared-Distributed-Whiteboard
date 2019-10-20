@@ -4,6 +4,7 @@ import javax.net.ServerSocketFactory;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -15,6 +16,7 @@ import org.json.simple.parser.ParseException;
 public class Main {
     public static int counter = 0;
     public static ArrayList<Socket> clients_socket_dir;
+    public static ArrayList<String> clients_uname_dir = new ArrayList<String>();
 
     public static void main(String[] args) throws IOException {
 
@@ -45,28 +47,47 @@ public class Main {
         }
     }
 
-    private static void serveClient(Socket socket) {
-        try (Socket clientSocket = socket) {
-
+    private static void serveClient(Socket socket)
+    {
+        try (Socket clientSocket = socket)
+        {
             JSONParser mess_parser = new JSONParser();
             DataInputStream input = new DataInputStream(clientSocket.getInputStream());
             DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream());
 
             clients_socket_dir.add(clientSocket);
-            
+            //clients_uname_dir.add(first_message);
+            try
+            {
+                ObjectOutputStream objectOutput = new ObjectOutputStream(clientSocket.getOutputStream());
+                objectOutput.writeObject(clients_uname_dir);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            String first_message = input.readUTF();
+            clients_uname_dir.add(first_message);
+            System.out.println(clients_uname_dir);
+            //JSONParser socket_parser = new JSONParser();
+            //JSONObject socket_dict = (JSONObject) socket_parser.parse(first_message);
 
-            while (true) {
+            while (true)
+            {
                 String new_message = input.readUTF();
                 JSONObject client_message = (JSONObject) mess_parser.parse(new_message);
                 String request_type = (String) client_message.get("Request_Type");
                 int length;
-                if (request_type.matches("Chat")) {
+                if (request_type.matches("Chat"))
+                {
                     String message_content = (String) client_message.get("Message_Content");
-                    if (!message_content.equals("")) {
+                    if (!message_content.equals(""))
+                    {
                         broadcastMessageToOtherClients(client_message, clientSocket);
                     }
                 }
-                else if (request_type.matches("Canvas")){
+                else if (request_type.matches("Canvas"))
+                {
                     String canvas_length = (String) client_message.get("CanvasLength");
                     length = Integer.parseInt(canvas_length);
                     if (length > 0)
@@ -77,8 +98,12 @@ public class Main {
                     }
                 }
             }
-        } catch (IOException | ParseException e) {
+        }
+        catch (IOException | ParseException e)
+        {
+            System.out.println("Test");
             clients_socket_dir.remove(socket);
+            //clients_uname_dir.remove();
             e.printStackTrace();
         }
     }

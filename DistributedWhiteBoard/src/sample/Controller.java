@@ -101,6 +101,7 @@ public class Controller implements Initializable
     public static DataInputStream ipStream;
     public static DataOutputStream opStream;
     public String username;
+    public static ArrayList<String> clients_uname_list;
     public static int flag = 0;
 
     String incomingMsg = "";
@@ -109,6 +110,54 @@ public class Controller implements Initializable
         clientSocket = new Socket("192.168.43.124", 2000);
         ipStream = new DataInputStream(clientSocket.getInputStream());
         opStream = new DataOutputStream(clientSocket.getOutputStream());
+        try
+        {
+            ObjectInputStream objectInput = new ObjectInputStream(clientSocket.getInputStream());
+            try
+            {
+                Object object = objectInput.readObject();
+                clients_uname_list =  (ArrayList<String>) object;
+                //new Alert(Alert.AlertType.INFORMATION, "Received list!").show();
+                //System.out.println("Received list!");
+                //System.out.println(clients_uname_list.get(1));
+            }
+            catch (ClassNotFoundException e)
+            {
+                //e.printStackTrace();
+                System.out.println(e);
+            }
+        }
+        catch (IOException e)
+        {
+            //e.printStackTrace();
+            System.out.println(e);
+        }
+        if (clients_uname_list.isEmpty())
+        {
+            System.out.println("You are the manager!");
+            //new Alert(Alert.AlertType.INFORMATION, "You are the manager!").show();
+        }
+        else
+        {
+            while (clients_uname_list.contains(username))
+            {
+                //new Alert(Alert.AlertType.INFORMATION, "Use a different username!").show();
+                TextInputDialog username_dialog = new TextInputDialog();
+                username_dialog.setTitle("USERNAME");
+                username_dialog.setContentText("Please enter another username");
+                Optional<String> user_name = username_dialog.showAndWait();
+                if (user_name.isPresent())
+                {
+                    username = user_name.get();
+                    if (!clients_uname_list.contains(username))
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+        clients_uname_list.add(username);
+        opStream.writeUTF(username);
     }
     public void sendCanvas() throws IOException {
         JSONObject message_parser = new JSONObject();
@@ -383,20 +432,19 @@ public class Controller implements Initializable
     @FXML
     public void showmemberlist (ActionEvent event)
     {
-        new Alert(Alert.AlertType.INFORMATION, username).show();
+        String memlist = "";;
+        //new Alert(Alert.AlertType.INFORMATION, username).show();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Members List");
+        alert.setHeaderText("List of participants in the current session");
+        for (int i = 0; i < clients_uname_list.size(); i++)
+        {
+            memlist = memlist + clients_uname_list.get(i) + "\n";
+        }
+        alert.setContentText(memlist);
+        alert.show();
     }
 
-    /*<Button fx:id="sendbutton" layoutX="272.0" layoutY="637.0" mnemonicParsing="false" onAction="#handleButtonAction" text="Send" />
-    <Label fx:id="textdisplay" alignment="TOP_LEFT" layoutX="12.0" layoutY="60.0" prefHeight="525.0" prefWidth="310.0" wrapText="true" />
-    @FXML
-    public void handleButtonAction (ActionEvent event)
-    {
-        String messagec = chatmessage.getText();
-        //operate(message_s, in, ou);
-        chatmessage.setText("");
-        String existingmess = textdisplay.getText();
-        textdisplay.setText(existingmess + "\n\nClient 1: " + messagec);
-    }*/
     private void handleChat() throws IOException, ParseException {
         JSONParser mess_parser = new JSONParser();
 
