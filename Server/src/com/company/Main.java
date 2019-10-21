@@ -70,6 +70,15 @@ public class Main
             }
             String first_message = input.readUTF();
             clients_uname_dir.add(first_message);
+
+            if (clients_uname_dir.size() > 1)
+            {
+                JSONObject notify_manager = new JSONObject();
+                notify_manager.put("Request_Type", "Notify");
+                notify_manager.put("ClientUsername", first_message);
+                (new DataOutputStream(clients_socket_dir.get(0).getOutputStream())).writeUTF(String.valueOf(notify_manager));
+            }
+
             System.out.println(clients_uname_dir);
             JSONObject message_parser = new JSONObject();
             message_parser.put("Request_Type", "Member");

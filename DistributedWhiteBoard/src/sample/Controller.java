@@ -605,6 +605,13 @@ public class Controller implements Initializable
                 TimeUnit.SECONDS.sleep(5);
                 System.exit(0);
             }
+            else if (request_type.matches("Notify"))
+            {
+                if (manager == 1)
+                {
+                    System.out.println(user + " wants to join the group.");
+                }
+            }
         }
     }
 
