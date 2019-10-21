@@ -9,6 +9,8 @@ import java.lang.reflect.Array;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -18,6 +20,7 @@ public class Main
     public static int counter = 0;
     public static ArrayList<Socket> clients_socket_dir;
     public static ArrayList<String> clients_uname_dir = new ArrayList<String>();
+    public static HashMap<String, Socket> client_dir;
 
     public static void main(String[] args) throws IOException
     {
@@ -25,6 +28,7 @@ public class Main
         ServerSocketFactory factory = ServerSocketFactory.getDefault();
 
         clients_socket_dir = new ArrayList<Socket>();
+        client_dir = new HashMap<>();
 
         try(ServerSocket server = factory.createServerSocket(2000)) {
 
@@ -70,6 +74,7 @@ public class Main
             }
             String first_message = input.readUTF();
             clients_uname_dir.add(first_message);
+            client_dir.put(first_message, socket);
 
             if (clients_uname_dir.size() > 1)
             {
@@ -147,6 +152,14 @@ public class Main
                     clients_socket_dir.remove(clientSocket);
                     //return 0;
                 }
+                else if (request_type.matches("DenyAccess"))
+                {
+                    Socket port_of_denied_user = client_dir.get(user);
+                    clients_uname_dir.remove(user);
+                    (new DataOutputStream(port_of_denied_user.getOutputStream())).writeUTF(String.valueOf(client_message));
+                    clients_socket_dir.remove(port_of_denied_user);
+                    client_dir.remove(user);
+                }
             }
         }
         catch (IOException e)
@@ -194,7 +207,6 @@ public class Main
             //ObjectOutputStream objectOutput = new ObjectOutputStream(clientSocket.getOutputStream());
             for (int i = 0; i < clients_socket_dir.size(); i++)
             {
-
                 if(clients_socket_dir.get(i) == clientSocket)
                 {
                     continue;

@@ -206,8 +206,6 @@ public class Controller extends JFrame implements Initializable
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Thread t = new Thread(() -> handleCanvas(url, resourceBundle));
-        t.start();
         Thread t2 = new Thread(() -> {
             try {
                 handleChat();
@@ -215,6 +213,8 @@ public class Controller extends JFrame implements Initializable
                 e.printStackTrace();
             }
         });
+        Thread t = new Thread(() -> handleCanvas(url, resourceBundle));
+        t.start();
         t2.start();
     }
 
@@ -589,8 +589,18 @@ public class Controller extends JFrame implements Initializable
             {
                 if (manager == 1)
                 {
-                    JOptionPane.showMessageDialog(null, (user + " wants to join the group."));
+                    int ans = JOptionPane.showConfirmDialog(null, (user + " wants to join the group."));
+                    if (ans == JOptionPane.NO_OPTION) {
+                        JSONObject message_parser = new JSONObject();
+                        message_parser.put("Request_Type", "DenyAccess");
+                        message_parser.put("ClientUsername", user);
+                        opStream.writeUTF(String.valueOf(message_parser));
+                    }
                 }
+            }
+            else if (request_type.matches("DenyAccess")){
+                JOptionPane.showMessageDialog(null, "Sorry, your request is denied");
+                System.exit(0);
             }
         }
     }
