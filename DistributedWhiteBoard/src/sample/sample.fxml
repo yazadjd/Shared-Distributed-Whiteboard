@@ -34,11 +34,6 @@
                         <MenuItem fx:id="closeoption" mnemonicParsing="false" onAction="#clickclose" text="Close" />
                      </items>
                   </Menu>
-                  <Menu fx:id="privilegemenu" mnemonicParsing="false" text="Privileges">
-                    <items>
-                      <MenuItem fx:id="removeUsers" mnemonicParsing="false" onAction="#clickRemoveUsers" text="Remove Users" />
-                    </items>
-                  </Menu>
                </menus>
             </MenuBar>
             <VBox layoutX="-1.0" layoutY="43.0" prefHeight="47.0" prefWidth="921.0">
@@ -58,9 +53,9 @@
                         <Button fx:id="eraser" mnemonicParsing="false" onAction="#eraserSelected" text="Eraser" />
                         <ColorPicker fx:id="colorpicker" prefHeight="27.0" prefWidth="106.0" />
                         <TextField fx:id="bsize" prefHeight="27.0" prefWidth="87.0" />
-                        <Label fx:id="ismanager" prefHeight="25.0" prefWidth="181.0" scaleY="1.5" text="Label" wrapText="true">
+                        <Label fx:id="ismanager" prefHeight="25.0" prefWidth="181.0" scaleY="1.5" text="" wrapText="true">
                            <font>
-                              <Font size="10.0" />
+                              <Font name="Arial" size="14.0" />
                            </font>
                         </Label>
                      </children>

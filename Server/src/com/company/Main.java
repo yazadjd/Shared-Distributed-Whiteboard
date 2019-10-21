@@ -129,9 +129,11 @@ public class Main
                 else if (request_type.matches("ClientExit"))
                 {
                     client_message.put("Request_Type", "Member");
+                    Socket port_of_denied_user = client_dir.get(user);
                     clients_uname_dir.remove(user);
-                    broadcastUserListToOtherClients(client_message, clients_uname_dir, clientSocket);
-                    clients_socket_dir.remove(clientSocket);
+                    broadcastUserListToOtherClients(client_message, clients_uname_dir, port_of_denied_user);
+                    clients_socket_dir.remove(port_of_denied_user);
+                    port_of_denied_user.close();
                     //return 0;
                 }
                 else if (request_type.matches("DenyAccess"))
@@ -141,6 +143,15 @@ public class Main
                     (new DataOutputStream(port_of_denied_user.getOutputStream())).writeUTF(String.valueOf(client_message));
                     clients_socket_dir.remove(port_of_denied_user);
                     client_dir.remove(user);
+                }
+                else if(request_type.matches("RemoveUser")) {
+                    client_message.put("Request_Type", "Member");
+                    Socket port_of_denied_user = client_dir.get(user);
+                    clients_uname_dir.remove(user);
+                    broadcastUserListToOtherClients(client_message, clients_uname_dir, port_of_denied_user);
+                    client_message.put("Request_Type", "RemoveUser");
+                    (new DataOutputStream(port_of_denied_user.getOutputStream())).writeUTF(String.valueOf(client_message));
+                    clients_socket_dir.remove(port_of_denied_user);
                 }
                 else if (request_type.matches("Get Canvas")) {
                     JSONObject cl_message = new JSONObject();

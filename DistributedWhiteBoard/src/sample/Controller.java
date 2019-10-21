@@ -86,9 +86,6 @@ public class Controller extends JFrame implements Initializable
     private Menu filemenu;
 
     @FXML
-    private Menu privilegemenu;
-
-    @FXML
     private Button showmembers;
 
     @FXML
@@ -114,11 +111,10 @@ public class Controller extends JFrame implements Initializable
 
     public void socketInitialize() throws IOException
     {
-        clientSocket = new Socket("172.20.10.3", 2000);
+        clientSocket = new Socket("localhost", 2000);
         ipStream = new DataInputStream(clientSocket.getInputStream());
         opStream = new DataOutputStream(clientSocket.getOutputStream());
 
-        //message_parser.put("ClientUsername", username);
         try
         {
             ObjectInputStream objectInput = new ObjectInputStream(clientSocket.getInputStream());
@@ -126,9 +122,7 @@ public class Controller extends JFrame implements Initializable
             {
                 Object object = objectInput.readObject();
                 clients_uname_list =  (ArrayList<String>) object;
-                //new Alert(Alert.AlertType.INFORMATION, "Received list!").show();
-                //System.out.println("Received list!");
-                //System.out.println(clients_uname_list.get(1));
+
             }
             catch (ClassNotFoundException e)
             {
@@ -145,13 +139,11 @@ public class Controller extends JFrame implements Initializable
         {
             System.out.println("You are the manager!");
             manager = 1;
-            //new Alert(Alert.AlertType.INFORMATION, "You are the manager!").show();
         }
         else
         {
             while (clients_uname_list.contains(username))
             {
-                //new Alert(Alert.AlertType.INFORMATION, "Use a different username!").show();
                 TextInputDialog username_dialog = new TextInputDialog();
                 username_dialog.setTitle("USERNAME");
                 username_dialog.setContentText("Please enter another username");
@@ -173,7 +165,6 @@ public class Controller extends JFrame implements Initializable
         JSONObject message_parser = new JSONObject();
         message_parser.put("Request_Type", "Canvas");
         message_parser.put("ClientUsername", username);
-        //opStream.writeUTF("Hello Canvas Sending");
         try
         {
             Image snapshot = canvas.snapshot(null, null);
@@ -184,19 +175,16 @@ public class Controller extends JFrame implements Initializable
             message_parser.put("CanvasLength", String.valueOf(data.length));
             opStream.writeUTF(String.valueOf(message_parser));
             opStream.write(data);
-            //new Alert(Alert.AlertType.INFORMATION, "Your canvas has been saved successfully.").show();
         }
         catch (IOException e)
         {
             //e.printStackTrace();
             new Alert(Alert.AlertType.ERROR, "Unable to send canvas: " + e).show();
-            //System.out.println("Unable to save image: " + e);
         }
     }
 
     public void sendMessage(String m) throws IOException {
         opStream.writeUTF(m);
-        //opStream.writeUTF("Message sending");
     }
 
     public void threadInitialise(URL url, ResourceBundle resourceBundle){
@@ -266,7 +254,6 @@ public class Controller extends JFrame implements Initializable
     }
     private void handleCanvas(URL url, ResourceBundle resourceBundle) throws IOException {
         brushTool = canvas.getGraphicsContext2D();
-        //brushTool.setLineWidth(1);
         brushTool.setFill(Color.WHITE);
         toolSelected = "brush"; // default tool selected
         bsize.setText("10"); //Default size
@@ -278,25 +265,17 @@ public class Controller extends JFrame implements Initializable
             openoption.setDisable(true);
             saveoption.setDisable(true);
             saveasoption.setDisable(true);
-            privilegemenu.setDisable(true);
             ismanager.setText("Username: " + username);
 
             JSONObject getCanvas = new JSONObject();
             getCanvas.put("Request_Type", "Get Canvas");
             getCanvas.put("ClientUsername", username);
             opStream.writeUTF(String.valueOf(getCanvas));
-
-
         }
         else
         {
             ismanager.setText("Manager: " + username);
         }
-
-        /*if (manager == 0)
-        {
-
-        }*/
 
         canvas.setOnMouseClicked(e -> {
             x = e.getX() - size / 2;
@@ -501,44 +480,51 @@ public class Controller extends JFrame implements Initializable
     }
 
     @FXML
-    public void showmemberlist (ActionEvent event)
-    {
-        ArrayList<String> choices = new ArrayList<>();
-        String memlist = "";
-        for (int i = 0; i < clients_uname_list.size(); i++)
-        {
-            choices.add(clients_uname_list.get(i));
-        }
-        /*choices.add("a");
-        choices.add("b");
-        choices.add("c");*/
+    public void showmemberlist (ActionEvent event) throws IOException {
+        if (manager == 1) {
+            ArrayList<String> choices = new ArrayList<>();
+            String memlist = "";
+            for (int i = 0; i < clients_uname_list.size(); i++)
+            {
+                if (!(clients_uname_list.get(i).matches(username))) {
+                    choices.add(clients_uname_list.get(i));
+                }
 
-        ChoiceDialog<String> dialog = new ChoiceDialog<>("", choices);
-        dialog.setTitle("Active Members");
-        dialog.setHeaderText("List of participants in the current session");
-        for (int i = 0; i < clients_uname_list.size(); i++)
-        {
-            memlist = memlist + clients_uname_list.get(i) + "\n";
-        }
-        dialog.setContentText(memlist+"\nChoose the client to be removed:");
+            }
+            ChoiceDialog<String> dialog = new ChoiceDialog<>("Choose User to Remove", choices);
+            dialog.setTitle("Active Members");
+            dialog.setHeaderText("List of participants in the current session");
+            for (int i = 0; i < clients_uname_list.size(); i++)
+            {
+                memlist = memlist + clients_uname_list.get(i) + "\n";
+            }
+            dialog.setContentText("Active Members:\n" + memlist);
+            Optional<String> result = dialog.showAndWait();
+            if (result.isPresent())
+            {
+                String remove_user = result.get();
+                if(!remove_user.matches("Choose User to Remove")) {
+                    JSONObject message_parser = new JSONObject();
+                    message_parser.put("Request_Type", "RemoveUser");
+                    message_parser.put("ClientUsername", remove_user);
+                    opStream.writeUTF(String.valueOf(message_parser));
+                }
 
-        // Traditional way to get the response value.
-        Optional<String> result = dialog.showAndWait();
-        if (result.isPresent())
-        {
-            System.out.println("Your choice: " + result.get());
+            }
         }
-        /*String memlist = "";
-        //new Alert(Alert.AlertType.INFORMATION, username).show();
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Members List");
-        alert.setHeaderText("List of participants in the current session");
-        for (int i = 0; i < clients_uname_list.size(); i++)
-        {
-            memlist = memlist + clients_uname_list.get(i) + "\n";
+        else {
+            String memlist = "";
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Members List");
+            alert.setHeaderText("List of participants in the current session");
+            for (int i = 0; i < clients_uname_list.size(); i++)
+            {
+                memlist = memlist + clients_uname_list.get(i) + "\n";
+            }
+            alert.setContentText(memlist);
+            alert.show();
         }
-        alert.setContentText(memlist);
-        alert.show();*/
+
     }
 
     private void handleChat() throws IOException, ParseException, InterruptedException {
@@ -651,6 +637,10 @@ public class Controller extends JFrame implements Initializable
                 JOptionPane.showMessageDialog(null, "Sorry, your request is denied");
                 System.exit(0);
             }
+            else if (request_type.matches("RemoveUser")) {
+                JOptionPane.showMessageDialog(null, "Sorry, your session has been discontinued");
+                System.exit(0);
+            }
         }
     }
 
@@ -672,8 +662,7 @@ public class Controller extends JFrame implements Initializable
     }
 
     @FXML
-    public void clicknew (ActionEvent event)
-    {
+    public void clicknew (ActionEvent event) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("New Canvas");
         alert.setHeaderText("Are you sure you want to open a new canvas?");
@@ -683,6 +672,7 @@ public class Controller extends JFrame implements Initializable
         {
             brushTool.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
             safile = null;
+            sendCanvas();
         }
     }
 
@@ -706,6 +696,7 @@ public class Controller extends JFrame implements Initializable
                     InputStream io = new FileInputStream(ofile);
                     Image img = new Image(io);
                     brushTool.drawImage(img, 0, 0);
+                    sendCanvas();
                 }
                 catch (IOException e)
                 {
@@ -735,7 +726,6 @@ public class Controller extends JFrame implements Initializable
             {
                 //e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Unable to save canvas: " + e).show();
-                //System.out.println("Unable to save image: " + e);
             }
         }
     }
@@ -760,7 +750,6 @@ public class Controller extends JFrame implements Initializable
                 {
                     //e.printStackTrace();
                     new Alert(Alert.AlertType.ERROR, "Unable to save canvas: " + e).show();
-                    //System.out.println("Unable to save image: " + e);
                 }
             }
         }
@@ -776,7 +765,6 @@ public class Controller extends JFrame implements Initializable
             {
                 //e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, "Unable to save canvas: " + e).show();
-                //System.out.println("Unable to save image: " + e);
             }
         }
     }
@@ -807,11 +795,5 @@ public class Controller extends JFrame implements Initializable
             }
             System.exit(0);
         }
-    }
-
-    @FXML
-    public void clickRemoveUsers (ActionEvent event) throws IOException
-    {
-
     }
 }
