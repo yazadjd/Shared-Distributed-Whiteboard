@@ -36,7 +36,7 @@
                   </Menu>
                   <Menu fx:id="privilegemenu" mnemonicParsing="false" text="Privileges">
                     <items>
-                      <MenuItem mnemonicParsing="false" text="Action 1" />
+                      <MenuItem fx:id="removeUsers" mnemonicParsing="false" onAction="#clickRemoveUsers" text="Remove Users" />
                     </items>
                   </Menu>
                </menus>
@@ -56,9 +56,9 @@
                         <Button fx:id="rectangle" mnemonicParsing="false" onAction="#rectSelected" text="Rectangle" />
                         <Button fx:id="text" mnemonicParsing="false" onAction="#textSelected" text="Text" />
                         <Button fx:id="eraser" mnemonicParsing="false" onAction="#eraserSelected" text="Eraser" />
-                        <ColorPicker fx:id="colorpicker" />
-                        <TextField fx:id="bsize" />
-                        <Label fx:id="ismanager" prefHeight="25.0" prefWidth="219.0" scaleY="1.5" text="Label" wrapText="true">
+                        <ColorPicker fx:id="colorpicker" prefHeight="27.0" prefWidth="106.0" />
+                        <TextField fx:id="bsize" prefHeight="27.0" prefWidth="87.0" />
+                        <Label fx:id="ismanager" prefHeight="25.0" prefWidth="181.0" scaleY="1.5" text="Label" wrapText="true">
                            <font>
                               <Font size="10.0" />
                            </font>
