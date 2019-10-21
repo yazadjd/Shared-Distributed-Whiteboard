@@ -503,7 +503,32 @@ public class Controller extends JFrame implements Initializable
     @FXML
     public void showmemberlist (ActionEvent event)
     {
+        ArrayList<String> choices = new ArrayList<>();
         String memlist = "";
+        for (int i = 0; i < clients_uname_list.size(); i++)
+        {
+            choices.add(clients_uname_list.get(i));
+        }
+        /*choices.add("a");
+        choices.add("b");
+        choices.add("c");*/
+
+        ChoiceDialog<String> dialog = new ChoiceDialog<>("", choices);
+        dialog.setTitle("Active Members");
+        dialog.setHeaderText("List of participants in the current session");
+        for (int i = 0; i < clients_uname_list.size(); i++)
+        {
+            memlist = memlist + clients_uname_list.get(i) + "\n";
+        }
+        dialog.setContentText(memlist+"\nChoose the client to be removed:");
+
+        // Traditional way to get the response value.
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent())
+        {
+            System.out.println("Your choice: " + result.get());
+        }
+        /*String memlist = "";
         //new Alert(Alert.AlertType.INFORMATION, username).show();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Members List");
@@ -513,7 +538,7 @@ public class Controller extends JFrame implements Initializable
             memlist = memlist + clients_uname_list.get(i) + "\n";
         }
         alert.setContentText(memlist);
-        alert.show();
+        alert.show();*/
     }
 
     private void handleChat() throws IOException, ParseException, InterruptedException {
