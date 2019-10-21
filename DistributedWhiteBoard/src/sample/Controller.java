@@ -579,7 +579,7 @@ public class Controller implements Initializable
                     System.out.println(e);
                 }
             }
-            else if (request_type.matches("Exit"))
+            else if (request_type.matches("ManagerExit"))
             {
                 //canvas.setAccessibleText("The manager has terminated the session");
                 brushTool.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -732,8 +732,15 @@ public class Controller implements Initializable
             if (manager == 1)
             {
                 JSONObject message_parser = new JSONObject();
-                message_parser.put("Request_Type", "Exit");
+                message_parser.put("Request_Type", "ManagerExit");
                 message_parser.put("ClientUsername", "random");
+                opStream.writeUTF(String.valueOf(message_parser));
+            }
+            else
+            {
+                JSONObject message_parser = new JSONObject();
+                message_parser.put("Request_Type", "ClientExit");
+                message_parser.put("ClientUsername", username);
                 opStream.writeUTF(String.valueOf(message_parser));
             }
             System.exit(0);

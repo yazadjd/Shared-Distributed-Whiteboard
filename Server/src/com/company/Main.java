@@ -74,7 +74,8 @@ public class Main
             JSONObject message_parser = new JSONObject();
             message_parser.put("Request_Type", "Member");
             message_parser.put("ClientUsername", "random");
-            try
+            broadcastUserListToOtherClients(message_parser, clients_uname_dir, clientSocket);
+            /*try
             {
                 //ObjectOutputStream objectOutput = new ObjectOutputStream(clientSocket.getOutputStream());
                 for (int i = 0; i < clients_socket_dir.size(); i++)
@@ -93,7 +94,7 @@ public class Main
             catch (IOException e)
             {
                 e.printStackTrace();
-            }
+            }*/
             //JSONParser socket_parser = new JSONParser();
             //JSONObject socket_dict = (JSONObject) socket_parser.parse(first_message);
 
@@ -102,6 +103,7 @@ public class Main
                 String new_message = input.readUTF();
                 JSONObject client_message = (JSONObject) mess_parser.parse(new_message);
                 String request_type = (String) client_message.get("Request_Type");
+                String user = (String) client_message.get("ClientUsername");
                 int length;
                 if (request_type.matches("Chat"))
                 {
@@ -122,17 +124,31 @@ public class Main
                         broadcastCanvasToOtherClients(client_message, message, clientSocket);
                     }
                 }
-                else if (request_type.matches("Exit"))
+                else if (request_type.matches("ManagerExit"))
                 {
                     broadcastMessageToOtherClients(client_message, clientSocket);
+                    clients_socket_dir.clear();
+                    clients_uname_dir.clear();
+                }
+                else if (request_type.matches("ClientExit"))
+                {
+                    client_message.put("Request_Type", "Member");
+                    clients_uname_dir.remove(user);
+                    broadcastUserListToOtherClients(client_message, clients_uname_dir, clientSocket);
+                    clients_socket_dir.remove(clientSocket);
+                    //return 0;
                 }
             }
         }
-        catch (IOException | ParseException e)
+        catch (IOException e)
         {
-            if(e.toString().matches("java.io.EOFException")){
-                clients_socket_dir.remove(socket);
-            }
+            System.out.println("Test");
+            clients_socket_dir.remove(socket);
+            //clients_uname_dir.remove();
+            e.printStackTrace();
+        }
+        catch (ParseException e)
+        {
             e.printStackTrace();
         }
     }
@@ -161,5 +177,29 @@ public class Main
                 (new DataOutputStream(clients_socket_dir.get(i).getOutputStream())).write(message);
             }
         }
+    }
+
+    public static void broadcastUserListToOtherClients(JSONObject client_message, ArrayList<String> user_name, Socket clientSocket) throws IOException {
+        try
+        {
+            //ObjectOutputStream objectOutput = new ObjectOutputStream(clientSocket.getOutputStream());
+            for (int i = 0; i < clients_socket_dir.size(); i++)
+            {
+
+                if(clients_socket_dir.get(i) == clientSocket)
+                {
+                    continue;
+                }
+                else{
+                    (new DataOutputStream(clients_socket_dir.get(i).getOutputStream())).writeUTF(String.valueOf(client_message));
+                    (new ObjectOutputStream(clients_socket_dir.get(i).getOutputStream())).writeObject(user_name);
+                }
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
     }
 }
