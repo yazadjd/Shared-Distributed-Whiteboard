@@ -130,9 +130,9 @@ public class Main
         }
         catch (IOException | ParseException e)
         {
-            System.out.println("Test");
-            clients_socket_dir.remove(socket);
-            //clients_uname_dir.remove();
+            if(e.toString().matches("java.io.EOFException")){
+                clients_socket_dir.remove(socket);
+            }
             e.printStackTrace();
         }
     }
