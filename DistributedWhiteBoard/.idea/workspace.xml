@@ -2,17 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e5a24bc8-a14a-434c-b2d8-b03a928150af" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../Server/.idea/uiDesigner.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/DistributedWhiteBoard/sample/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DistributedWhiteBoard/sample/Controller.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DistributedWhiteBoard/sample/WhiteBoard.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DistributedWhiteBoard/sample/WhiteBoard.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/DistributedWhiteBoard/sample/sample.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/DistributedWhiteBoard/sample/sample.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/sample.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/sample/sample.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Server/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Server/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/out/production/Server/com/company/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/out/production/Server/com/company/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/src/com/company/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/out/production/Server/com/company/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/src/com/company/Main.java" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,6 +25,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -46,7 +44,7 @@
   </component>
   <component name="RunManager">
     <configuration name="WhiteBoard" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="ALTERNATIVE_JRE_PATH" value="11.0.3" />
+      <option name="ALTERNATIVE_JRE_PATH" value="11" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="sample.WhiteBoard" />
       <module name="DistributedWhiteBoard" />
@@ -78,6 +76,7 @@
       <updated>1571663592437</updated>
       <workItem from="1571663593835" duration="1711000" />
       <workItem from="1571665671987" duration="1170000" />
+      <workItem from="1571674566563" duration="270000" />
     </task>
     <servers />
   </component>
