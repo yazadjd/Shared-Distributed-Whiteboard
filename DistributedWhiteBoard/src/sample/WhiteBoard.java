@@ -47,10 +47,18 @@ public class WhiteBoard extends Application
         stage.setTitle("White Board");
         stage.setScene(new Scene(root, 1280, 720, Color.WHITE));
         stage.show();
+        stage.setOnCloseRequest( e -> {
+            e.consume();
+            closeProgram();
+        });
     }
 
     public static void main(String[] args) throws IOException {
         launch(args);
+    }
+
+    private void closeProgram(){
+        System.exit(0);
     }
 
 }

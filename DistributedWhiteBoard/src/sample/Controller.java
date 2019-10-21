@@ -22,9 +22,11 @@ import javafx.scene.input.MouseDragEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.ArcType;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -36,6 +38,7 @@ import java.util.ResourceBundle;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import javafx.stage.Stage;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -249,6 +252,12 @@ public class Controller implements Initializable
         brushTool.setLineWidth(size);
         brushTool.strokeLine(init_x, init_y, x, y);
     }
+    public void insertText(String text, double x, double  y, double siz){
+        brushTool.setFill(colorpicker.getValue());
+        brushTool.setStroke(colorpicker.getValue());
+        brushTool.setFont(new Font(siz));
+        brushTool.fillText(text, x, y);
+    }
     private void handleCanvas(URL url, ResourceBundle resourceBundle) {
         brushTool = canvas.getGraphicsContext2D();
         //brushTool.setLineWidth(1);
@@ -275,6 +284,26 @@ public class Controller implements Initializable
         {
 
         }*/
+
+        canvas.setOnMouseClicked(e -> {
+            x = e.getX() - size / 2;
+            y = e.getY() - size / 2;
+
+            if (toolSelected.matches("text") && !bsize.getText().isEmpty()) {
+                TextInputDialog text_input = new TextInputDialog();
+                text_input.setTitle("TEXT BOX");
+                text_input.setContentText("Please Enter Text to Display");
+                Optional<String> text_display = text_input.showAndWait();
+                String text_value = String.valueOf(text_display.get());
+                double size_text = Double.parseDouble(bsize.getText());
+                insertText(text_value, x,  y, size_text);
+            }
+            try {
+                sendCanvas();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
 
         canvas.setOnMousePressed( e -> {
             brushTool.setFill(colorpicker.getValue());
@@ -413,6 +442,7 @@ public class Controller implements Initializable
                 ex.printStackTrace();
             }
         });
+
     }
 
     @FXML
@@ -449,6 +479,12 @@ public class Controller implements Initializable
     public void lineSelected(ActionEvent e)
     {
         toolSelected = "line";
+    }
+
+    @FXML
+    public void textSelected(ActionEvent e)
+    {
+        toolSelected = "text";
     }
 
     @FXML
@@ -551,7 +587,7 @@ public class Controller implements Initializable
                 //new Alert(Alert.AlertType.INFORMATION, "The manager has terminated the session").show();
                 //System.out.println("The manager has terminated the session");
                 TimeUnit.SECONDS.sleep(5);
-                Platform.exit();
+                System.exit(0);
             }
         }
     }
@@ -700,7 +736,7 @@ public class Controller implements Initializable
                 message_parser.put("ClientUsername", "random");
                 opStream.writeUTF(String.valueOf(message_parser));
             }
-            Platform.exit();
+            System.exit(0);
         }
     }
 }
