@@ -2,9 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5beba0c7-2bb3-4fd0-9853-30da9981af56" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/description.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/gradle.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/libraries/json_simple_1_1_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/libraries/org_json_json_20190722.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/uiDesigner.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/DistributedWhiteBoard.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/DistributedWhiteBoard.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/out/production/DistributedWhiteBoard/sample/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/out/production/DistributedWhiteBoard/sample/Controller.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/src/sample/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/src/sample/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Server.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Server/com/company/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Server/com/company/Main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Main.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -54,7 +67,7 @@
   </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
-      <option name="ALTERNATIVE_JRE_PATH" value="11" />
+      <option name="ALTERNATIVE_JRE_PATH" value="11.0.3" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="com.company.Main" />
       <module name="Server" />
@@ -91,6 +104,9 @@
       <workItem from="1571630665175" duration="906000" />
       <workItem from="1571633565712" duration="1800000" />
       <workItem from="1571650354694" duration="4211000" />
+      <workItem from="1571662013739" duration="832000" />
+      <workItem from="1571662925353" duration="894000" />
+      <workItem from="1571663838027" duration="1111000" />
     </task>
     <servers />
   </component>

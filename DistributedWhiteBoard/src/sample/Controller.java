@@ -114,7 +114,7 @@ public class Controller extends JFrame implements Initializable
 
     public void socketInitialize() throws IOException
     {
-        clientSocket = new Socket("localhost", 2000);
+        clientSocket = new Socket("172.20.10.3", 2000);
         ipStream = new DataInputStream(clientSocket.getInputStream());
         opStream = new DataOutputStream(clientSocket.getOutputStream());
 
@@ -562,7 +562,7 @@ public class Controller extends JFrame implements Initializable
                     if (flag == 1) {
                         if (toolSelected.matches("brush")) {
                             for (int point = 0; point < arrlistx.size(); point++) {
-                                brushTool.fillRoundRect(arrlistx.get(point), arrlisty.get(point), size, size, size, size);
+                                brushfill(arrlistx.get(point), arrlisty.get(point), size);
                             }
                         } else if (toolSelected.matches("eraser")) {
                             for (int point = 0; point < arrlistx.size(); point++) {

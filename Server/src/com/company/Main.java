@@ -123,6 +123,8 @@ public class Main
                     broadcastMessageToOtherClients(client_message, clientSocket);
                     clients_socket_dir.clear();
                     clients_uname_dir.clear();
+                    canvas_length = "0";
+                    message = null;
                 }
                 else if (request_type.matches("ClientExit"))
                 {
