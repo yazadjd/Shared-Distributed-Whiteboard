@@ -24,6 +24,7 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.ArcType;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
+import javafx.stage.Popup;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -583,8 +584,23 @@ public class Controller implements Initializable
             {
                 //canvas.setAccessibleText("The manager has terminated the session");
                 brushTool.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-                brushTool.strokeText("The manager has terminated the session", canvas.getWidth()/2, canvas.getHeight()/2);
+                TextInputDialog app_end = new TextInputDialog();
+                app_end.setHeaderText("Ending Application");
+                app_end.setContentText("Manager has closed the session");
+                app_end.showingProperty();
+                //brushTool.strokeText("The manager has terminated the session", canvas.getWidth()/2, canvas.getHeight()/2);
                 //new Alert(Alert.AlertType.INFORMATION, "The manager has terminated the session").show();
+                /*
+                Stage current_stage = ((Stage) canvas.getScene().getWindow());
+                Popup popup = new Popup();
+                Label lb = new Label("Manager tells you to Fuck off");
+                lb.setStyle(" -fx-background-color: white;");
+                popup.getContent().add(lb);
+                // set size of label
+                lb.setMinWidth(80);
+                lb.setMinHeight(50);
+                popup.show(current_stage);
+                 */
                 //System.out.println("The manager has terminated the session");
                 TimeUnit.SECONDS.sleep(5);
                 System.exit(0);
@@ -745,5 +761,11 @@ public class Controller implements Initializable
             }
             System.exit(0);
         }
+    }
+
+    @FXML
+    public void clickRemoveUsers (ActionEvent event) throws IOException
+    {
+
     }
 }
