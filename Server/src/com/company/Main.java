@@ -21,6 +21,8 @@ public class Main
     public static ArrayList<Socket> clients_socket_dir;
     public static ArrayList<String> clients_uname_dir = new ArrayList<String>();
     public static HashMap<String, Socket> client_dir;
+    public static byte[] message;
+    public static String canvas_length = "0";
 
     public static void main(String[] args) throws IOException
     {
@@ -89,28 +91,6 @@ public class Main
             message_parser.put("Request_Type", "Member");
             message_parser.put("ClientUsername", "random");
             broadcastUserListToOtherClients(message_parser, clients_uname_dir, clientSocket);
-            /*try
-            {
-                //ObjectOutputStream objectOutput = new ObjectOutputStream(clientSocket.getOutputStream());
-                for (int i = 0; i < clients_socket_dir.size(); i++)
-                {
-
-                    if(clients_socket_dir.get(i) == clientSocket)
-                    {
-                        continue;
-                    }
-                    else{
-                        (new DataOutputStream(clients_socket_dir.get(i).getOutputStream())).writeUTF(String.valueOf(message_parser));
-                        (new ObjectOutputStream(clients_socket_dir.get(i).getOutputStream())).writeObject(clients_uname_dir);
-                    }
-                }
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }*/
-            //JSONParser socket_parser = new JSONParser();
-            //JSONObject socket_dict = (JSONObject) socket_parser.parse(first_message);
 
             while (true)
             {
@@ -129,11 +109,11 @@ public class Main
                 }
                 else if (request_type.matches("Canvas"))
                 {
-                    String canvas_length = (String) client_message.get("CanvasLength");
+                    canvas_length = (String) client_message.get("CanvasLength");
                     length = Integer.parseInt(canvas_length);
                     if (length > 0)
                     {
-                        byte[] message = new byte[length];
+                        message = new byte[length];
                         input.readFully(message, 0, message.length);
                         broadcastCanvasToOtherClients(client_message, message, clientSocket);
                     }
@@ -159,6 +139,16 @@ public class Main
                     (new DataOutputStream(port_of_denied_user.getOutputStream())).writeUTF(String.valueOf(client_message));
                     clients_socket_dir.remove(port_of_denied_user);
                     client_dir.remove(user);
+                }
+                else if (request_type.matches("Get Canvas")) {
+                    JSONObject cl_message = new JSONObject();
+                    cl_message.put("Request_Type", "Get Canvas");
+                    cl_message.put("ClientUsername", clients_uname_dir.get(clients_uname_dir.size() - 1));
+                    cl_message.put("CanvasLength", canvas_length);
+                    (new DataOutputStream(clients_socket_dir.get((clients_socket_dir).size() - 1).getOutputStream())).writeUTF(String.valueOf(cl_message));
+                    if (message != null) {
+                        (new DataOutputStream(clients_socket_dir.get((clients_socket_dir).size() - 1).getOutputStream())).write(message);
+                    }
                 }
             }
         }
@@ -207,6 +197,7 @@ public class Main
             //ObjectOutputStream objectOutput = new ObjectOutputStream(clientSocket.getOutputStream());
             for (int i = 0; i < clients_socket_dir.size(); i++)
             {
+
                 if(clients_socket_dir.get(i) == clientSocket)
                 {
                     continue;

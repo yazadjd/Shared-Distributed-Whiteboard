@@ -38,7 +38,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
-
 import javafx.stage.Stage;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -213,7 +212,13 @@ public class Controller extends JFrame implements Initializable
                 e.printStackTrace();
             }
         });
-        Thread t = new Thread(() -> handleCanvas(url, resourceBundle));
+        Thread t = new Thread(() -> {
+            try {
+                handleCanvas(url, resourceBundle);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         t.start();
         t2.start();
     }
@@ -259,7 +264,7 @@ public class Controller extends JFrame implements Initializable
         brushTool.setFont(new Font(siz));
         brushTool.fillText(text, x, y);
     }
-    private void handleCanvas(URL url, ResourceBundle resourceBundle) {
+    private void handleCanvas(URL url, ResourceBundle resourceBundle) throws IOException {
         brushTool = canvas.getGraphicsContext2D();
         //brushTool.setLineWidth(1);
         brushTool.setFill(Color.WHITE);
@@ -275,6 +280,13 @@ public class Controller extends JFrame implements Initializable
             saveasoption.setDisable(true);
             privilegemenu.setDisable(true);
             ismanager.setText("Username: " + username);
+
+            JSONObject getCanvas = new JSONObject();
+            getCanvas.put("Request_Type", "Get Canvas");
+            getCanvas.put("ClientUsername", username);
+            opStream.writeUTF(String.valueOf(getCanvas));
+
+
         }
         else
         {
@@ -518,6 +530,18 @@ public class Controller extends JFrame implements Initializable
                     String existing_mess = textdisplay.getText();
                     textdisplay.setText(existing_mess + "\n\n"+ user + ": " + message_content);
                     incomingMsg = "";
+                }
+            }
+            else if (request_type.matches("Get Canvas")){
+                String canvas_length = (String) client_message.get("CanvasLength");
+                Integer length = Integer.parseInt(canvas_length);
+                if (length > 0) {
+                    byte[] message = new byte[length];
+                    ipStream.readFully(message, 0, message.length);
+                    ByteArrayInputStream bais = new ByteArrayInputStream(message);
+                    BufferedImage bImage2 = ImageIO.read(bais);
+                    Image img = SwingFXUtils.toFXImage(bImage2, null);
+                    brushTool.drawImage(img, 0, 0);
                 }
             }
             else if (request_type.matches("Canvas"))
