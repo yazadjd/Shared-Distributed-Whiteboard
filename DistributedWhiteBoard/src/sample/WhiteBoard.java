@@ -14,7 +14,6 @@ import java.net.Socket;
 
 public class WhiteBoard extends Application
 {
-
     private static WhiteBoard instance;
 
     private Stage stage;
@@ -60,5 +59,4 @@ public class WhiteBoard extends Application
     private void closeProgram(){
         System.exit(0);
     }
-
 }

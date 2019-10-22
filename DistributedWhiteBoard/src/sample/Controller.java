@@ -1,6 +1,6 @@
 package sample;
 
-import javafx.application.Platform;
+import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -42,6 +42,7 @@ import javafx.stage.Stage;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import java.net.UnknownHostException;
 
 public class Controller extends JFrame implements Initializable
 {
@@ -103,15 +104,20 @@ public class Controller extends JFrame implements Initializable
     public static DataInputStream ipStream;
     public static DataOutputStream opStream;
     public String username;
+    public String ipaddr;
+    public int port;
     public static ArrayList<String> clients_uname_list;
     public static int flag = 0;
     public static int manager = 0;
 
     String incomingMsg = "";
 
-    public void socketInitialize() throws IOException
-    {
-        clientSocket = new Socket("localhost", 2000);
+    public void socketInitialize () throws IOException {
+        clientSocket = new Socket(ipaddr, port);
+        if (!clientSocket.isBound()){
+            JOptionPane.showMessageDialog(null, "Invalid connection parameters.");
+            System.exit(0);
+        }
         ipStream = new DataInputStream(clientSocket.getInputStream());
         opStream = new DataOutputStream(clientSocket.getOutputStream());
 
@@ -212,13 +218,90 @@ public class Controller extends JFrame implements Initializable
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        TextInputDialog username_dialog = new TextInputDialog();
+    public void initialize(URL url, ResourceBundle resourceBundle)
+    {
+        String port_number;
+        /*TextInputDialog username_dialog = new TextInputDialog();
         username_dialog.setTitle("USERNAME");
         username_dialog.setContentText("Please Enter a Suitable Username");
         Optional<String> user_name = username_dialog.showAndWait();
         if (user_name.isPresent()){
             username = user_name.get();
+        }*/
+        TextInputDialog ip_addr_dialog = new TextInputDialog();
+        ip_addr_dialog.setTitle("IP ADDRESS");
+        ip_addr_dialog.setContentText("Please enter a valid IP Address");
+        Optional<String> ip_addr = ip_addr_dialog.showAndWait();
+        if (ip_addr.isPresent())
+        {
+            ipaddr = ip_addr.get();
+            while (ipaddr.equals(""))
+            {
+                TextInputDialog ip_addr_new_dialog = new TextInputDialog();
+                ip_addr_new_dialog.setTitle("IP ADDRESS");
+                ip_addr_new_dialog.setContentText("No value was entered, please try again");
+                Optional<String> ip_addr_new = ip_addr_new_dialog.showAndWait();
+                if (ip_addr_new.isPresent())
+                {
+                    ipaddr = ip_addr_new.get();
+                    if (!ipaddr.equals(""))
+                    {
+                        break;
+                    }
+                }
+                //ipaddr = JOptionPane.showInputDialog("No value was entered, please Try again: ");
+            }
+            //if ip
+            TextInputDialog port_dialog = new TextInputDialog();
+            port_dialog.setTitle("PORT NUMBER");
+            port_dialog.setContentText("Please enter a valid port number");
+            Optional<String> port_num = port_dialog.showAndWait();
+            //if po
+            if (port_num.isPresent())
+            {
+                port_number = port_num.get();
+                while (!port_number.matches("[0-9]{3,5}"))
+                {
+                    TextInputDialog port_new_dialog = new TextInputDialog();
+                    port_new_dialog.setTitle("PORT NUMBER");
+                    port_new_dialog.setContentText("Invalid Input, please try again");
+                    Optional<String> port_new_num = port_new_dialog.showAndWait();
+                    if (port_new_num.isPresent())
+                    {
+                        port_number = port_new_num.get();
+                        if (port_number.matches("[0-9]{3,5}"))
+                        {
+                            break;
+                        }
+                    }
+                }
+                port = Integer.parseInt(port_number);
+
+                TextInputDialog username_dialog = new TextInputDialog();
+                username_dialog.setTitle("USERNAME");
+                username_dialog.setContentText("Please enter a suitable username");
+                Optional<String> user_name = username_dialog.showAndWait();
+                if (user_name.isPresent())
+                {
+                    username = user_name.get();
+                    while (username.equals(""))
+                    {
+                        TextInputDialog username_new_dialog = new TextInputDialog();
+                        username_new_dialog.setTitle("USERNAME");
+                        username_new_dialog.setContentText("No value was entered, please try again");
+                        Optional<String> user_name_new = username_new_dialog.showAndWait();
+                        if (user_name_new.isPresent())
+                        {
+                            username = user_name_new.get();
+                            if (!username.equals(""))
+                            {
+                                break;
+                            }
+                        }
+                        //ipaddr = JOptionPane.showInputDialog("No value was entered, please Try again: ");
+                    }
+                }
+            }
         }
 
         threadInitialise(url, resourceBundle);
@@ -796,4 +879,8 @@ public class Controller extends JFrame implements Initializable
             System.exit(0);
         }
     }
+
+    public void setParameter(Application.Parameters parameters) {
+    }
+
 }

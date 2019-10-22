@@ -2,6 +2,7 @@ package com.company;
 
 import javax.net.ServerSocketFactory;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import javax.net.ServerSocketFactory;
 import java.io.DataInputStream;
@@ -14,6 +15,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.*;
+import javax.swing.JOptionPane;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -39,18 +41,26 @@ public class MainForm {
         frame.setContentPane(server_app.contentPane);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        String input = JOptionPane.showInputDialog("Please enter a valid port number: ");
+        int port;
+
+        while (!input.matches("[0-9]{3,5}"))
+        {
+            input = JOptionPane.showInputDialog("Invalid Input, please try again: ");
+        }
+        port = Integer.parseInt(input);
+        frame.setVisible(true);
+        server_app.textArea1.setText("Currently listening on port: " + port);
 
         ServerSocketFactory factory = ServerSocketFactory.getDefault();
 
         clients_socket_dir = new ArrayList<Socket>();
         client_dir = new HashMap<>();
 
-        try(ServerSocket server = factory.createServerSocket(2000)) {
-
-            server_app.textArea1.setText("Waiting for client connection-");
+        try(ServerSocket server = factory.createServerSocket(port)) {
+            str = server_app.textArea1.getText();
+            server_app.textArea1.setText(str + "\nWaiting for client connection-");
 
             // Wait for connections.
             while(true)
