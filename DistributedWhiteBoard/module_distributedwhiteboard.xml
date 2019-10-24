@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_distributedwhiteboard" default="compile.module.distributedwhiteboard">
+  <dirname property="module.distributedwhiteboard.basedir" file="${ant.file.module_distributedwhiteboard}"/>
+  
+  <property name="module.jdk.home.distributedwhiteboard" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.distributedwhiteboard" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.distributedwhiteboard" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.distributedwhiteboard" value="-encoding UTF-8 -source 11 -target 11 ${compiler.args}"/>
+  
+  <property name="distributedwhiteboard.output.dir" value="${module.distributedwhiteboard.basedir}/out/production/DistributedWhiteBoard"/>
+  <property name="distributedwhiteboard.testoutput.dir" value="${module.distributedwhiteboard.basedir}/out/test/DistributedWhiteBoard"/>
+  
+  <path id="distributedwhiteboard.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="distributedwhiteboard.module.production.classpath">
+    <path refid="${module.jdk.classpath.distributedwhiteboard}"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  <path id="distributedwhiteboard.runtime.production.module.classpath">
+    <pathelement location="${distributedwhiteboard.output.dir}"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  <path id="distributedwhiteboard.module.classpath">
+    <path refid="${module.jdk.classpath.distributedwhiteboard}"/>
+    <pathelement location="${distributedwhiteboard.output.dir}"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  <path id="distributedwhiteboard.runtime.module.classpath">
+    <pathelement location="${distributedwhiteboard.testoutput.dir}"/>
+    <pathelement location="${distributedwhiteboard.output.dir}"/>
+    <path refid="library.lib.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.distributedwhiteboard">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.distributedwhiteboard">
+    <patternset refid="excluded.from.module.distributedwhiteboard"/>
+  </patternset>
+  
+  <path id="distributedwhiteboard.module.sourcepath">
+    <dirset dir="${module.distributedwhiteboard.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.distributedwhiteboard" depends="compile.module.distributedwhiteboard.production,compile.module.distributedwhiteboard.tests" description="Compile module DistributedWhiteBoard"/>
+  
+  <target name="compile.module.distributedwhiteboard.production" depends="register.custom.compilers" description="Compile module DistributedWhiteBoard; production classes">
+    <mkdir dir="${distributedwhiteboard.output.dir}"/>
+    <javac2 destdir="${distributedwhiteboard.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.distributedwhiteboard}/javac">
+      <compilerarg line="${compiler.args.distributedwhiteboard}"/>
+      <bootclasspath refid="distributedwhiteboard.module.bootclasspath"/>
+      <classpath refid="distributedwhiteboard.module.production.classpath"/>
+      <src refid="distributedwhiteboard.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.distributedwhiteboard"/>
+    </javac2>
+    
+    <copy todir="${distributedwhiteboard.output.dir}">
+      <fileset dir="${module.distributedwhiteboard.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.distributedwhiteboard.tests" depends="register.custom.compilers,compile.module.distributedwhiteboard.production" description="compile module DistributedWhiteBoard; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.distributedwhiteboard" description="cleanup module">
+    <delete dir="${distributedwhiteboard.output.dir}"/>
+    <delete dir="${distributedwhiteboard.testoutput.dir}"/>
+  </target>
+</project>

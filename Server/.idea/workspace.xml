@@ -2,15 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5beba0c7-2bb3-4fd0-9853-30da9981af56" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/artifacts/DistributedWhiteBoard_jar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/out/production/DistributedWhiteBoard/sample/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/out/production/DistributedWhiteBoard/sample/Controller.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/out/production/DistributedWhiteBoard/sample/WhiteBoard.class" beforeDir="false" afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/out/production/DistributedWhiteBoard/sample/WhiteBoard.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/src/sample/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/src/sample/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DistributedWhiteBoard/src/sample/WhiteBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/../DistributedWhiteBoard/src/sample/WhiteBoard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Server/com/company/MainForm.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Server/com/company/MainForm.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/MainForm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/MainForm.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -70,6 +68,8 @@
       </method>
     </configuration>
     <configuration name="MainForm" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="11.0.3" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="com.company.MainForm" />
       <module name="Server" />
       <option name="PROGRAM_PARAMETERS" value="2000" />
@@ -120,6 +120,7 @@
       <workItem from="1571663838027" duration="1111000" />
       <workItem from="1571665535610" duration="6746000" />
       <workItem from="1571674023582" duration="495000" />
+      <workItem from="1571827699093" duration="653000" />
     </task>
     <servers />
   </component>
