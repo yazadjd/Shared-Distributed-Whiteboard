@@ -2,7 +2,7 @@
 
 The aim of the problem is to implement a shared whiteboard that allows multiple users to concurrently draw on canvas over a network, with a wide range of functionalities like freehand, shapes and text. Group chat services and Menu options are the other two important features of the shared whiteboard apart from the Graphical User Interface. Through the chat service, active users will be able to interact with other users with messages. Menu options include ‘New’, ‘Open’, ‘Save’, and ‘Save as’ and ‘Close’.
 
-## Basic Info
+## Overview
 
 The DistributedWhiteBoard folder contains the Client implementation while the Server folder contains the Server implementation of the System. The communication between these two divisions is a multithreaded TCP connection.
 
